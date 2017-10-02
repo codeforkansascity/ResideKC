@@ -102,9 +102,19 @@ $(document).ready(function () {
 
     ;
 
-
+    $("#address-form").keypress(function (e) {
+        if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
+            submitFunction();
+        } else {
+            return true;
+        }
+    });
+    
     $("#address-form").on("submit", function () {
+        submitFunction();
+    });
 
+    function submitFunction(){
         var one_line_address = encodeURIComponent($("#address_id").val().replace(/ KANSAS CITY, MO/, ''));
 
         var address_api_url = "http://dev-api.codeforkc.org//address-attributes/V0/" + one_line_address + "?city=Kansas%20City&state=mo";
@@ -121,29 +131,29 @@ $(document).ready(function () {
 
                 $('.address-values').empty();
 
-		
-		var kiva_pin = address_api_obj.data.city_id;
+        
+        var kiva_pin = address_api_obj.data.city_id;
 
-		console.log(kiva_pin);
+        console.log(kiva_pin);
 
 
-		// There should be a better way to do this instead of nesting Ajax calls within Ajax calls
+        // There should be a better way to do this instead of nesting Ajax calls within Ajax calls
 
-        	var url = "http://maps.kcmo.org/kcgis/rest/services/external/Tables/MapServer/2/" + kiva_pin + "?f=json&pretty=true";
+            var url = "http://maps.kcmo.org/kcgis/rest/services/external/Tables/MapServer/2/" + kiva_pin + "?f=json&pretty=true";
 console.log(url);
 
-	        $.ajax({
-	            method: "GET",
-	            crossDomain: true,
-	            url: url
-	        })
-	
-	        .done(function (data) {
-	                address_obj = jQuery.parseJSON(data);
-	                console.log(address_obj);
+            $.ajax({
+                method: "GET",
+                crossDomain: true,
+                url: url
+            })
+    
+            .done(function (data) {
+                    address_obj = jQuery.parseJSON(data);
+                    console.log(address_obj);
 
-		$('#your').append('<div class="col-md-3">Your Trash day is</div><div class="col-md-9">' + address_obj.feature.attributes.TRASHDAY + '</div>');
-		$('#your').append('<div class="col-md-3">Your Council District is</div><div class="col-md-9">' + address_obj.feature.attributes.COUNCILDISTRICT + '</div>');
+        $('#your').append('<div class="col-md-3">Your Trash day is</div><div class="col-md-9">' + address_obj.feature.attributes.TRASHDAY + '</div>');
+        $('#your').append('<div class="col-md-3">Your Council District is</div><div class="col-md-9">' + address_obj.feature.attributes.COUNCILDISTRICT + '</div>');
 
                 $.each(address_obj.feature.attributes, function (key, value) {
 
@@ -156,7 +166,7 @@ console.log(url);
                     $('#cases > tbody:last').append(row);
 
                 });
-			var line = '';
+            var line = '';
 
 
                  })
@@ -187,8 +197,7 @@ console.log(url);
             });
 
         return false;
-    });
-
+    }
     /* ########################################################## */
 
 });
