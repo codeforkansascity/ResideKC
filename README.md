@@ -17,18 +17,22 @@ Code for KC Slack Channel     #trashday
 ## Road Map
 
 * (in progress) survey [link to survey](https://docs.google.com/forms/d/e/1FAIpQLScl2ZbuX96WsrpWMX4Q_NpmZPII-HXIM9-5J9V8M4tVMsrRpw/viewform?usp=sf_link.) people to see what information they would like to know.  Leslie
-* See what other citys have done, for example [Is today trash day?](http://istodaytrashday.com/) for Arlington
-* Design 
+* See what other cities have done, for example [Is today trash day?](http://istodaytrashday.com/) for Arlington
+* Identify top 5 categories based on survey results and prioritize them 
+* Identify data sources. Eric/Leslie
+* Design site (Wireframe, etc.) building on Paul Barham's work he already did for council district
 * Create issues that can be followed to implement 
 * Implement
 
 ## What we need
 
-Is a person or team to take ownership of this project and create a site that answers new and existing residents questions.r
+Front end designer for site design
+
 
 
 
 ## How to help
 
 * Come to [Code for KC HackNights](http://www.meetup.com/KCBrigade/)
+* Email leslieascott1967@gmail.com
 
