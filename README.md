@@ -27,7 +27,8 @@ Code for KC Slack Channel     #trashday
 ## What we need
 
 Front end designer for site design
-
+Developer
+Marketing person to encourage use once site is live
 
 
 
