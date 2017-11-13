@@ -1,16 +1,15 @@
 # Your Trash Day
 
-This project that is up for adoption.
+This project is up for adoption.
 
 ## Problem Statement
 
 Trash Day Lookup App to assist new and existing residents in identifying their trash pickup day, recycling locations, and 
-other trashy things.
+other *neighborhood-area services* (removed "trashy things" scs; another option "location-specific").
 
 Are you looking to practice your new coding skills? This project is a
 group study opportunity to build a trash day lookup app to assist new
-and existing residents in identifying their trash pickup day, recycling
-locations, and other trashy things.
+and existing residents *to quickly learn about local services for their home.* (removed "in identifying their trash pickup day, recycling locations, and other trashy things." scs)
 
 Code for KC Slack Channel     #trashday
 
