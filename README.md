@@ -17,7 +17,12 @@ Code for KC Slack Channel     #trashday
 
 * (in progress) survey [link to survey](https://docs.google.com/forms/d/e/1FAIpQLScl2ZbuX96WsrpWMX4Q_NpmZPII-HXIM9-5J9V8M4tVMsrRpw/viewform?usp=sf_link.) people to see what information they would like to know.  Leslie
 * See what other cities have done, for example [Is today trash day?](http://istodaytrashday.com/) for Arlington
-* Identify top 5 categories based on survey results and prioritize them 
+* Display the first 5 identified categories based on survey results and prioritize them.
+* 1 Voting location
+* 2 Council district
+* 3 Nearest park
+* 4 Utilities
+* 5 Nearest glass recycling
 * Identify data sources. Eric/Leslie
 * Design site (Wireframe, etc.) building on Paul Barham's work he already did for council district
 * Create issues that can be followed to implement 
