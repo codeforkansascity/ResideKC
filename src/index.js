@@ -5,13 +5,17 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import axios from 'axios';
 
+var myObject = {"KIVA": "4"};
+
 class FrontDoor extends React.Component{
 
     constructor(props) {
         super(props);
         this.state = {
             value: '',
-            outside: true
+            outside: true,
+            councilDistrict : '',
+            kivaPIN: ''
         };
     
         this.handleChange = this.handleChange.bind(this);
@@ -23,17 +27,21 @@ class FrontDoor extends React.Component{
       }
     
       handleSubmit(event) {
+        var enteredAddress = this.state.value;
+        var sentAddress;
         var testURL = "http://dev-api.codeforkc.org//address-attributes/V0/1407%20Grand%20blvd?city=Kansas%20City&state=mo";
-        var dummyURL = "https://jsonplaceholder.typicode.com/users";
-        var newURL = "http://dev-api.codeforkc.org//address-attributes/V0/2516%20Holmes%20st?city=Kansas%20City&state=mo";
-        
-        console.log(this.state.value);
+       if (enteredAddress === ""){
+            sentAddress = testURL;
+       } else sentAddress = "http://dev-api.codeforkc.org//address-attributes/V0/" + enteredAddress + "?city=Kansas%20City&state=mo";
+        console.log(enteredAddress);
         event.preventDefault();
-        axios.get(newURL).then(function(response){
+        axios.get(sentAddress).then(function(response){
             var myResponse = response.data;
             console.log("this is working");
-            console.log(myResponse.data.city_id);
+            myObject.KIVA = myResponse.data.city_id;
+            console.log(myObject.KIVA);
         });
+        
 
         this.setState({ outside: false});
       }
@@ -71,64 +79,63 @@ class FrontDoor extends React.Component{
       }
 }
 
-class Hallway extends React.Component{
-    render(){
-        return (
-            <div>
-                <div className="menuBar">
-                <form>
-                <div><label><input type="radio" name="groupName" value="Option1" checked={true}/><p1>Option Something</p1></label></div>
-                <div><label><input type="radio" name="groupName" value="Option2" /><p1>Option Something2</p1></label></div>
-                <div><label><input type="radio" name="groupName" value="Option3" /><p1>Option Something3</p1></label></div>
-                </form>
-                </div>
-            </div>
-        );
-    }
-}
-
+// InsideHouse is a component that is the second part of the site. It has the radio buttons and locations of tertiary components
 class InsideHouse extends React.Component{
     constructor(props){
         super(props);
-        this.state= {
-            doorway: "rad1",
+        this.state = {
+            doorway: "rad1"
         };
+        this.changeStuff = this.changeStuff.bind(this);
     }
+
     changeStuff(changeEvent){
         this.setState({doorway: changeEvent.target.value});
     }
 
     renderRad1(){
-        <div>
-        <div className="menuBar">
-            <label><input type="radio" name="myRadio" value="rad1" onChange={this.changeStuff} checked={this.state.doorway === 'rad1'} /><p1>Radio1</p1></label>
-            <label><input type="radio" name="myRadio" value="rad2" onChange={this.changeStuff} checked={this.state.doorway === 'rad2'}/><p1>Radio2</p1></label>
-            <label><input type="radio" name="myRadio" value="rad3" onChange={this.changeStuff} checked={this.state.doorway === 'rad3'}/><p1>Radio3</p1></label>
+        return(
+            <div>
+            <div className="menuBar">
+                <div><label><input type="radio" name="myRadio" value="rad1" onChange={this.changeStuff} checked={this.state.doorway === 'rad1'} /><p1>Kiva Pin (not working)</p1></label></div>
+                <div><label><input type="radio" name="myRadio" value="rad2" onChange={this.changeStuff} checked={this.state.doorway === 'rad2'}/><p1>Radio2</p1></label></div>
+                <div><label><input type="radio" name="myRadio" value="rad3" onChange={this.changeStuff} checked={this.state.doorway === 'rad3'}/><p1>Radio3</p1></label></div>
+            </div>
+            <div className="centerStuff">
+            <DisplayKiva />
+            </div>
         </div>
-        <h1>Here is the First Radio Button</h1>
-        </div>
+        );
     }
 
     renderRad2(){
-<div>
-        <div className="menuBar">
-            <label><input type="radio" name="myRadio" value="rad1" onChange={this.changeStuff} checked={this.state.doorway === 'rad1'} /><p1>Radio1</p1></label>
-            <label><input type="radio" name="myRadio" value="rad2" onChange={this.changeStuff} checked={this.state.doorway === 'rad2'}/><p1>Radio2</p1></label>
-            <label><input type="radio" name="myRadio" value="rad3" onChange={this.changeStuff} checked={this.state.doorway === 'rad3'}/><p1>Radio3</p1></label>
+        return(
+            <div>
+            <div className="menuBar">
+            <div><label><input type="radio" name="myRadio" value="rad1" onChange={this.changeStuff} checked={this.state.doorway === 'rad1'} /><p1>Kiva Pin (not working)</p1></label></div>
+                <div><label><input type="radio" name="myRadio" value="rad2" onChange={this.changeStuff} checked={this.state.doorway === 'rad2'}/><p1>Radio2</p1></label></div>
+                <div><label><input type="radio" name="myRadio" value="rad3" onChange={this.changeStuff} checked={this.state.doorway === 'rad3'}/><p1>Radio3</p1></label></div>
+            </div>
+            <div className="centerStuff">
+            <h1>Here is the Second Radio Button</h1>
+            </div>
         </div>
-        <h1>Here is the Second Radio Button</h1>
-        </div>
+        );
     }
 
     renderRad3(){
-<div>
-        <div className="menuBar">
-            <label><input type="radio" name="myRadio" value="rad1" onChange={this.changeStuff} checked={this.state.doorway === 'rad1'} /><p1>Radio1</p1></label>
-            <label><input type="radio" name="myRadio" value="rad2" onChange={this.changeStuff} checked={this.state.doorway === 'rad2'}/><p1>Radio2</p1></label>
-            <label><input type="radio" name="myRadio" value="rad3" onChange={this.changeStuff} checked={this.state.doorway === 'rad3'}/><p1>Radio3</p1></label>
-        </div>
+        return(
+            <div>
+            <div className="menuBar">
+            <div><label><input type="radio" name="myRadio" value="rad1" onChange={this.changeStuff} checked={this.state.doorway === 'rad1'} /><p1>Kiva Pin (not working)</p1></label></div>
+                <div><label><input type="radio" name="myRadio" value="rad2" onChange={this.changeStuff} checked={this.state.doorway === 'rad2'}/><p1>Radio2</p1></label></div>
+                <div><label><input type="radio" name="myRadio" value="rad3" onChange={this.changeStuff} checked={this.state.doorway === 'rad3'}/><p1>Radio3</p1></label></div>
+            </div>
+            <div className="centerStuff">
         <h1>Here is the Third Radio Button</h1>
         </div>
+        </div>
+        );
     }
 
     render(){
@@ -139,6 +146,20 @@ class InsideHouse extends React.Component{
           } else if (this.state.doorway === "rad3"){
             return this.renderRad3();
           }
+    }
+}
+//This is a test component to display the kiva pin number. In future planning on updating to trashday and/or council district
+class DisplayKiva extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {inputData: myObject.KIVA};
+    }
+    render(){
+        return(
+            <div>
+                <h1>Hey this part worked {this.state.inputData}</h1>
+            </div>
+        );
     }
 }
 
