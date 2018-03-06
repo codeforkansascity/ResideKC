@@ -5,7 +5,7 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import axios from 'axios';
 
-var myObject = {"KIVA": "4"};
+let myObject = {"KIVA": "4", "cityCouncilDistrict": "", "trashPickUp": ""};
 
 class FrontDoor extends React.Component{
 
@@ -27,24 +27,32 @@ class FrontDoor extends React.Component{
       }
     
       handleSubmit(event) {
-        var enteredAddress = this.state.value;
-        var sentAddress;
-        var testURL = "http://dev-api.codeforkc.org//address-attributes/V0/1407%20Grand%20blvd?city=Kansas%20City&state=mo";
+        let enteredAddress = this.state.value;
+        let sentAddress;
+        let testURL = "http://dev-api.codeforkc.org//address-attributes/V0/1407%20Grand%20blvd?city=Kansas%20City&state=mo";
        if (enteredAddress === ""){
             sentAddress = testURL;
        } else sentAddress = "http://dev-api.codeforkc.org//address-attributes/V0/" + enteredAddress + "?city=Kansas%20City&state=mo";
         console.log(enteredAddress);
         event.preventDefault();
         axios.get(sentAddress).then(function(response){
-            var myResponse = response.data;
-            console.log("this is working");
+            let myResponse = response.data;
             myObject.KIVA = myResponse.data.city_id;
-            console.log(myObject.KIVA);
+            myObject.cityCouncilDistrict =  myResponse.data.city_council_district;
+            let myTestKiva = "http://maps.kcmo.org/kcgis/rest/services/external/Tables/MapServer/2/" + myResponse.data.city_id + "?f=json&pretty=true";
+            axios.get(myTestKiva).then(function(response){
+                //console.log("this part worked");
+                let mySubResponse = response.data;
+                myObject.trashPickUp = mySubResponse.feature.attributes.TRASHDAY;
+                console.log(mySubResponse.feature.attributes);
+                console.log(mySubResponse.feature.attributes.TRASHDAY);
+            });
         });
         
-
         this.setState({ outside: false});
       }
+
+      
 
       renderIn(){
           return(
@@ -97,12 +105,12 @@ class InsideHouse extends React.Component{
         return(
             <div>
             <div className="menuBar">
-                <div><label><input type="radio" name="myRadio" value="rad1" onChange={this.changeStuff} checked={this.state.doorway === 'rad1'} /><p1>Kiva Pin (not working)</p1></label></div>
-                <div><label><input type="radio" name="myRadio" value="rad2" onChange={this.changeStuff} checked={this.state.doorway === 'rad2'}/><p1>Radio2</p1></label></div>
-                <div><label><input type="radio" name="myRadio" value="rad3" onChange={this.changeStuff} checked={this.state.doorway === 'rad3'}/><p1>Radio3</p1></label></div>
+                <div><label><input type="radio" name="myRadio" value="rad1" onChange={this.changeStuff} checked={this.state.doorway === 'rad1'} />Recycling Information</label></div>
+                <div><label><input type="radio" name="myRadio" value="rad2" onChange={this.changeStuff} checked={this.state.doorway === 'rad2'}/>City Council District</label></div>
+                <div><label><input type="radio" name="myRadio" value="rad3" onChange={this.changeStuff} checked={this.state.doorway === 'rad3'}/>Trash Day</label></div>
             </div>
             <div className="centerStuff">
-            <DisplayKiva />
+            <DisplayRecycle />
             </div>
         </div>
         );
@@ -112,12 +120,12 @@ class InsideHouse extends React.Component{
         return(
             <div>
             <div className="menuBar">
-            <div><label><input type="radio" name="myRadio" value="rad1" onChange={this.changeStuff} checked={this.state.doorway === 'rad1'} /><p1>Kiva Pin (not working)</p1></label></div>
-                <div><label><input type="radio" name="myRadio" value="rad2" onChange={this.changeStuff} checked={this.state.doorway === 'rad2'}/><p1>Radio2</p1></label></div>
-                <div><label><input type="radio" name="myRadio" value="rad3" onChange={this.changeStuff} checked={this.state.doorway === 'rad3'}/><p1>Radio3</p1></label></div>
+            <div><label><input type="radio" name="myRadio" value="rad1" onChange={this.changeStuff} checked={this.state.doorway === 'rad1'} />Recycling Information</label></div>
+                <div><label><input type="radio" name="myRadio" value="rad2" onChange={this.changeStuff} checked={this.state.doorway === 'rad2'}/>City Council District</label></div>
+                <div><label><input type="radio" name="myRadio" value="rad3" onChange={this.changeStuff} checked={this.state.doorway === 'rad3'}/>Trash Day</label></div>
             </div>
             <div className="centerStuff">
-            <h1>Here is the Second Radio Button</h1>
+            <DisplayCouncil />
             </div>
         </div>
         );
@@ -127,12 +135,12 @@ class InsideHouse extends React.Component{
         return(
             <div>
             <div className="menuBar">
-            <div><label><input type="radio" name="myRadio" value="rad1" onChange={this.changeStuff} checked={this.state.doorway === 'rad1'} /><p1>Kiva Pin (not working)</p1></label></div>
-                <div><label><input type="radio" name="myRadio" value="rad2" onChange={this.changeStuff} checked={this.state.doorway === 'rad2'}/><p1>Radio2</p1></label></div>
-                <div><label><input type="radio" name="myRadio" value="rad3" onChange={this.changeStuff} checked={this.state.doorway === 'rad3'}/><p1>Radio3</p1></label></div>
+            <div><label><input type="radio" name="myRadio" value="rad1" onChange={this.changeStuff} checked={this.state.doorway === 'rad1'}/> Recycling Information</label></div>
+                <div><label><input type="radio" name="myRadio" value="rad2" onChange={this.changeStuff} checked={this.state.doorway === 'rad2'}/>City Council District</label></div>
+                <div><label><input type="radio" name="myRadio" value="rad3" onChange={this.changeStuff} checked={this.state.doorway === 'rad3'}/>Trash Day</label></div>
             </div>
             <div className="centerStuff">
-        <h1>Here is the Third Radio Button</h1>
+        <DisplayTrash />
         </div>
         </div>
         );
@@ -148,16 +156,46 @@ class InsideHouse extends React.Component{
           }
     }
 }
-//This is a test component to display the kiva pin number. In future planning on updating to trashday and/or council district
-class DisplayKiva extends React.Component{
+
+//This is for recycling information in Kansas City, MO
+class DisplayRecycle extends React.Component{
     constructor(props){
         super(props);
-        this.state = {inputData: myObject.KIVA};
     }
     render(){
         return(
-            <div>
-                <h1>Hey this part worked {this.state.inputData}</h1>
+            <div className="display-text">
+                <h1>Some uniform information here, recycling or otherwise</h1>
+            </div>
+        );
+}
+}
+
+//This is the component that is going to display the council district
+class DisplayCouncil extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {inputData: myObject.cityCouncilDistrict};
+    }
+    render(){
+        return (
+            <div className="display-text">
+                <h1>The city council district is {this.state.inputData}.</h1>
+            </div>
+        );
+    }
+}
+
+//This is a test component to display the trashDay
+class DisplayTrash extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {inputData: myObject.trashPickUp};
+    }
+    render(){
+        return(
+            <div className="display-text">
+                <h1>Your trash is normally picked up on {this.state.inputData}.</h1>
             </div>
         );
     }
