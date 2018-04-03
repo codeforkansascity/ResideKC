@@ -26,7 +26,8 @@ class FrontDoor extends React.Component{
       }
       
       setAddress(address) {
-          this.setState({ address })
+          const parsedAddress = address.split(',')[0];
+          this.setState({ address: parsedAddress })
       }
 
       handleChange(event) {
