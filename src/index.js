@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import axios from 'axios';
+import SearchBox from './components/SearchBox';
 
 let myObject = {"KIVA": "4", "cityCouncilDistrict": "", "trashPickUp": ""};
 
@@ -15,13 +16,20 @@ class FrontDoor extends React.Component{
             value: '',
             outside: true,
             councilDistrict : '',
-            kivaPIN: ''
+            kivaPIN: '',
+            address: ''
         };
     
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.setAddress = this.setAddress.bind(this);
       }
-    
+      
+      setAddress(address) {
+          const parsedAddress = address.split(',')[0];
+          this.setState({ address: parsedAddress })
+      }
+
       handleChange(event) {
         this.setState({value: event.target.value});
       }
@@ -68,7 +76,7 @@ class FrontDoor extends React.Component{
                 <form onSubmit={this.handleSubmit}>
                     <label className="mainLabel" >
                     Address
-                    <input type="text" value={this.state.value} onChange={this.handleChange} className="mainInput"  />
+                    <SearchBox setAddress={this.setAddress} />
                     </label>
                     <div>
                     <input type="submit" value="Submit" className="redButton" />
