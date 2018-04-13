@@ -1,5 +1,6 @@
 import React from 'react';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
+import './SearchBox.css';
 
 const renderSuggestion = ({suggestion}) => (
   <div>{suggestion}</div>
@@ -20,7 +21,7 @@ export default class SearchBar extends React.Component {
     super(props);
 
     this.state = {
-      address: ''
+      address: props.address ? props.address : ''
     };
 
     this.handleSelect = this.handleSelect.bind(this);
@@ -47,13 +48,15 @@ export default class SearchBar extends React.Component {
     }
 
     return (
-      <PlacesAutocomplete
-        renderSuggestion={renderSuggestion}
-        inputProps={inputProps}
-        onSelect={this.handleSelect}
-        onEnterKeyDown={this.handleSelect}
-        shouldFetchSuggestions={shouldFetchSuggestions}
-      />
+      <div class="searchbox">
+        <PlacesAutocomplete
+          renderSuggestion={renderSuggestion}
+          inputProps={inputProps}
+          onSelect={this.handleSelect}
+          onEnterKeyDown={this.handleSelect}
+          shouldFetchSuggestions={shouldFetchSuggestions}
+        />
+      </div>
     )
   }
 }
