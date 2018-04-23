@@ -1,10 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 import axios from 'axios';
+import { Button, ButtonGroup } from 'reactstrap';
+
 import SearchBox from './components/SearchBox';
 import Trashday from './components/TrashDay';
+import OtherInfo from './components/OtherInfo';
 
 let myObject = {"KIVA": "4", "cityCouncilDistrict": "", "trashPickUp": ""};
 
@@ -18,13 +22,15 @@ class App extends React.Component{
             councilDistrict : '',
             kivaPIN: '',
             address: '',
-            trashDay: ''
+            trashDay: '',
+            displayInfo: 'trash'
         };
     
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.setAddress = this.setAddress.bind(this);
         this.updateInfo = this.updateInfo.bind(this);
+        this.displayInfo = this.displayInfo.bind(this);
       }
       
       setAddress(address) {
@@ -42,6 +48,10 @@ class App extends React.Component{
             gotData: true,
             trashDay
         });
+      }
+
+      displayInfo(displayInfo) {
+          this.setState({ displayInfo });
       }
 
       handleSubmit(address) {
@@ -94,7 +104,12 @@ class App extends React.Component{
         return (
             <div className="info-page">
                 <SearchBox setAddress={this.setAddress} address={this.state.address} />
-                <Trashday trashDay={this.state.trashDay} />
+                <ButtonGroup>
+                    <Button onClick={() => {this.displayInfo("trash")}}>Trash</Button>
+                    <Button onClick={() => {this.displayInfo("other")}}>Other</Button>
+                </ButtonGroup>
+                {this.state.displayInfo === "trash" && <Trashday trashDay={this.state.trashDay} />}
+                {this.state.displayInfo === "other" && <OtherInfo />}
             </div>
         )
       }
