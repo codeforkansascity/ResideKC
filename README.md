@@ -3,7 +3,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 
-# Developoment
+# Development
 
 1. To get the project to your local computer
 ```
