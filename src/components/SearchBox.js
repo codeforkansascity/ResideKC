@@ -48,7 +48,7 @@ export default class SearchBar extends React.Component {
     }
 
     return (
-      <div class="searchbox">
+      <div className="searchbox">
         <PlacesAutocomplete
           renderSuggestion={renderSuggestion}
           inputProps={inputProps}
