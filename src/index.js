@@ -9,6 +9,7 @@ import { Button, ButtonGroup } from 'reactstrap';
 import SearchBox from './components/SearchBox';
 import Trashday from './components/TrashDay';
 import OtherInfo from './components/OtherInfo';
+import ElectedOfficials from './components/ElectedOfficials';
 
 let myObject = {"KIVA": "4", "cityCouncilDistrict": "", "trashPickUp": ""};
 
@@ -34,6 +35,11 @@ class App extends React.Component{
       }
       
       setAddress(address) {
+          const alertArray = [address.split(',')[1], address.split(',')[2]];
+          console.log(alertArray);
+          if (alertArray[0] !== " Kansas City" || alertArray[1] !== " MO"){
+              alert("Please select a Kansas City, Missouri address");
+          }
           const parsedAddress = address.split(',')[0];
           this.setState({ address: parsedAddress })
           this.handleSubmit(parsedAddress);
@@ -57,13 +63,14 @@ class App extends React.Component{
       handleSubmit(address) {
         //let enteredAddress = this.state.value;
         let sentAddress;
+        
         let testURL = "http://dev-api.codeforkc.org//address-attributes/V0/1407%20Grand%20blvd?city=Kansas%20City&state=mo";
         if (address === ""){
                 sentAddress = testURL;
         } else {
             sentAddress = "http://dev-api.codeforkc.org//address-attributes/V0/" + address + "?city=Kansas%20City&state=mo";
         }
-        console.log(address);
+        // THIS RIGHT HEREconsole.log(address);
         //event.preventDefault();
         axios.get(sentAddress).then((response) => {
             let myResponse = response.data;
@@ -74,14 +81,32 @@ class App extends React.Component{
                 //console.log("this part worked");
                 let mySubResponse = response.data;
                 let trashDay = mySubResponse.feature.attributes.TRASHDAY;
-                console.log(mySubResponse.feature.attributes);
-                console.log(mySubResponse.feature.attributes.TRASHDAY);
+               // THISconsole.log(mySubResponse.feature.attributes);
+                // THISconsole.log(mySubResponse.feature.attributes.TRASHDAY);
 
                 this.updateInfo(trashDay);
             });
         });
-        
-        
+        //***************HERE IS THE SECOND AXIOS CALL. THIS COULD BE SOMEWHERE ELSE***************
+        //var addressInputSecond = "https://www.googleapis.com/civicinfo/v2/representatives?address=3534%20Cherry%20Street%2C%20Kansas%20City%2C%20MO&key=AIzaSyAfUjwu_XWbdnA-vGUWEb2UImFIJri_7Po"
+        //axios.get(addressInputSecond).then(function(response){
+         // var myResponse = response.data;
+         // var offices = myResponse.offices;
+         // var officials = myResponse.officials;
+         // var x = 0;
+         // var myArray = [];
+         // while (x < offices.length){
+         //   var y = offices[x].name, z = officials[x].name, p = officials[x].photoUrl;
+         //   if (p === undefined){
+         //     p = "No photo available on google api."
+         //   }
+         //   var xyz = [y, z, p];
+         //   myArray.push(xyz);
+         //   x++;
+         // }
+        // console.log(myArray);
+        //});
+        //***************END OF AXIOS CALL***************
       }
 
       renderSearch() {
@@ -107,9 +132,11 @@ class App extends React.Component{
                 <ButtonGroup>
                     <Button onClick={() => {this.displayInfo("trash")}}>Trash</Button>
                     <Button onClick={() => {this.displayInfo("other")}}>Other</Button>
+                    <Button onClick={() => {this.displayInfo("electedOfficials")}}>Elected Officials</Button>
                 </ButtonGroup>
                 {this.state.displayInfo === "trash" && <Trashday trashDay={this.state.trashDay} />}
                 {this.state.displayInfo === "other" && <OtherInfo />}
+                {this.state.displayInfo === "electedOfficials"  && <ElectedOfficials />}
             </div>
         )
       }
