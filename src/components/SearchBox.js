@@ -20,10 +20,21 @@ export default class SearchBar extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      address: props.address ? props.address : ''
-    };
+    const bounds = new window.google.maps.LatLngBounds(
+      new window.google.maps.LatLng(54.69726685890506,-2.7379201682812226),
+      new window.google.maps.LatLng(55.38942944437183, -1.2456105979687226)
+    );
+    console.log(bounds);
+    const searchOptions = { 
+      bounds,
+      strictBounds: true
+    }
 
+    this.state = {
+      address: props.address ? props.address : '',
+      searchOptions
+    };
+    console.log(this.state);
     this.handleSelect = this.handleSelect.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
@@ -55,6 +66,7 @@ export default class SearchBar extends React.Component {
           onSelect={this.handleSelect}
           onEnterKeyDown={this.handleSelect}
           shouldFetchSuggestions={shouldFetchSuggestions}
+          searchOptions={this.state.searchOptions}
         />
       </div>
     )
