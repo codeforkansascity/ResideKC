@@ -36,13 +36,16 @@ class App extends React.Component{
       
       setAddress(address) {
           const alertArray = [address.split(',')[1], address.split(',')[2]];
-          console.log(alertArray);
+          //console.log(alertArray);
           if (alertArray[0] !== " Kansas City" || alertArray[1] !== " MO"){
               alert("Please select a Kansas City, Missouri address");
+          } else if (alertArray[0] == " Kansas City" && alertArray[1] == " MO"){
+              console.log("If it works this will appear.");
+              //The Below text was taken from outside of the if then statement originaly.
+              const parsedAddress = address.split(',')[0];
+              this.setState({ address: parsedAddress })
+              this.handleSubmit(parsedAddress);
           }
-          const parsedAddress = address.split(',')[0];
-          this.setState({ address: parsedAddress })
-          this.handleSubmit(parsedAddress);
       }
 
       handleChange(event) {
@@ -89,6 +92,7 @@ class App extends React.Component{
         });
         //***************HERE IS THE SECOND AXIOS CALL. THIS COULD BE SOMEWHERE ELSE***************
         //var addressInputSecond = "https://www.googleapis.com/civicinfo/v2/representatives?address=3534%20Cherry%20Street%2C%20Kansas%20City%2C%20MO&key=AIzaSyAfUjwu_XWbdnA-vGUWEb2UImFIJri_7Po"
+        // var senateCheck = 0; //This is here because there are 2 US senators if the officials array but only one in the offices array
         //axios.get(addressInputSecond).then(function(response){
          // var myResponse = response.data;
          // var offices = myResponse.offices;
@@ -96,12 +100,15 @@ class App extends React.Component{
          // var x = 0;
          // var myArray = [];
          // while (x < offices.length){
-         //   var y = offices[x].name, z = officials[x].name, p = officials[x].photoUrl;
+         //   var y = offices[x - senateCheck].name, z = officials[x].name, p = officials[x].photoUrl;
          //   if (p === undefined){
          //     p = "No photo available on google api."
          //   }
          //   var xyz = [y, z, p];
          //   myArray.push(xyz);
+         //   if (y == "United States Senator"){
+         //     senateCheck = 1;
+         //   }
          //   x++;
          // }
         // console.log(myArray);
