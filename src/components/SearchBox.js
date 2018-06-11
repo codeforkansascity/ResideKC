@@ -1,6 +1,5 @@
 import React from 'react';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
-import './SearchBox.css';
 
 const renderSuggestion = ({suggestion}) => (
   <div>{suggestion}</div>
