@@ -54,7 +54,7 @@ export default class SearchBar extends React.Component {
       value : this.state.address,
       onChange: this.handleChange,
       autoFocus: true,
-      placeholder: 'Search Places'
+      placeholder: 'What is your address?'
     }
 
     return (
