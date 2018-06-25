@@ -1,10 +1,16 @@
 import React from 'react';
-import './OtherInfo.css';
+import './ElectedOfficials.css';
 
 export default function ElectedOffialsInfo(props){
     return(
         <div className="otherInfo">
-            <h2> Working on Elected official array. Will talk about API progression</h2>
+            <h2> The Senators are {props.electedInfo[2][1]} and {props.electedInfo[3][1]}</h2>
+                <div>
+                <img src ={props.electedInfo[2][2]} />
+                <img src ={props.electedInfo[3][2]} />
+                </div>
+            <h2>The House Representative is {props.electedInfo[4][1]}</h2>
+            <img src={props.electedInfo[4][2]} />
         </div>
     );
 }
