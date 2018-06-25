@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700');
 
 html { 
-  background: url(assets/recycle-bg-edit.jpg) no-repeat center center fixed; 
+  background: url(assets/kansas-city-background.jpeg) no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -44,6 +44,11 @@ body {
   border: none;
   margin-top: 60px;
   font-weight: 300;
+  -webkit-transition: width 2s; /* Safari */
+  transition: width 1s;
+}
+.redButton:hover {
+  width: 350px;
 }
 .menuBar{
   width: 250px;

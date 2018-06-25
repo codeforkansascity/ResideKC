@@ -26,32 +26,36 @@ class App extends React.Component{
             trashDay: '',
             displayInfo: 'trash'
         };
-    
+
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.setAddress = this.setAddress.bind(this);
         this.updateInfo = this.updateInfo.bind(this);
         this.displayInfo = this.displayInfo.bind(this);
       }
-      
+
       setAddress(address) {
-          const alertArray = [address.split(',')[1], address.split(',')[2]];
-          //console.log(alertArray);
-          if (alertArray[0] !== " Kansas City" || alertArray[1] !== " MO"){
-              alert("Please select a Kansas City, Missouri address");
-          } else if (alertArray[0] == " Kansas City" && alertArray[1] == " MO"){
-              console.log("If it works this will appear.");
-              //The Below text was taken from outside of the if then statement originaly.
-              const parsedAddress = address.split(',')[0];
-              this.setState({ address: parsedAddress })
-              this.handleSubmit(parsedAddress);
-          }
+
+        var addressString = String(address)
+
+        //Check whether addressString contains both "kansas city" && "mo" before query.
+        //Convert to lower case before check to avoid false error alerts when capitalization is nonstandard.
+        if (!(addressString.toLowerCase().includes("kansas city")) || !(addressString.toLowerCase().includes("mo"))) {
+
+          //Address does not contain both 'kansas city' && 'mo'
+          //Show error
+          alert("Please choose another address")
+        } else {
+          const parsedAddress = addressString.split(',')[0];
+          this.setState({ address: parsedAddress });
+          this.handleSubmit(parsedAddress);
+        }
       }
 
       handleChange(event) {
         this.setState({value: event.target.value});
       }
-    
+
       updateInfo(trashDay) {
         this.setState({
             gotData: true,
@@ -66,7 +70,7 @@ class App extends React.Component{
       handleSubmit(address) {
         //let enteredAddress = this.state.value;
         let sentAddress;
-        
+
         let testURL = "http://dev-api.codeforkc.org//address-attributes/V0/1407%20Grand%20blvd?city=Kansas%20City&state=mo";
         if (address === ""){
                 sentAddress = testURL;
