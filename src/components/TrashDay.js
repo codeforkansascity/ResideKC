@@ -1,5 +1,4 @@
 import React from 'react';
-import './TrashDay.css';
 
 export default function TrashDay(props) {
   return (

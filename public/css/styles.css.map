@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAA,SAAU;EACR,UAAU,EAAE,MAAM;EAClB,KAAK,EAAE,KAAK;EACZ,SAAS,EAAE,KAAK;;ACHlB,UAAW;EACT,KAAK,EAAE,GAAG;EACV,MAAM,EAAE,MAAM;;AAEhB,gBAAkB;EAChB,aAAa,EAAE,IAAI;;ACLrB,UAAW;EACT,UAAU,EAAE,MAAM;EAClB,KAAK,EAAE,KAAK;EACZ,SAAS,EAAE,KAAK",
+"sources": ["../../src/scss/_TrashDay.scss","../../src/scss/_SearchBox.scss","../../src/scss/_OtherInfo.scss"],
+"names": [],
+"file": "styles.css"
+}
