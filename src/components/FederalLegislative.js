@@ -1,5 +1,5 @@
 import React from 'react';
-import './ElectedOfficials.css';
+import './FederalLegislative.css';
 
 export default function ElectedOffialsInfo(props){
     return(

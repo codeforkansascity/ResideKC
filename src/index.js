@@ -8,8 +8,8 @@ import { Button, ButtonGroup } from 'reactstrap';
 
 import SearchBox from './components/SearchBox';
 import Trashday from './components/TrashDay';
-import OtherInfo from './components/OtherInfo';
-import ElectedOfficials from './components/ElectedOfficials';
+import Stategovernment from './components/Stategovernment';
+import ElectedOfficials from './components/FederalLegislative';
 
 let myObject = {"KIVA": "4", "cityCouncilDistrict": "", "trashPickUp": ""};
 
@@ -62,15 +62,7 @@ class App extends React.Component{
         });
       }
 
-      //updateElectedO(senatorOne, senatorTwo) {
-        //console.log("The Senators are " + senatorOne + " and " +senatorTwo);
-       //   this.setState({
-       //       electedInfo
-       //   });
-      //}
-
       updateElectedO(electedInfo) {
-        console.log("The President is " + electedInfo);
           this.setState({
               electedInfo
           });
@@ -163,11 +155,11 @@ class App extends React.Component{
                 <SearchBox setAddress={this.setAddress} address={this.state.address} />
                 <ButtonGroup>
                     <Button onClick={() => {this.displayInfo("trash")}}>Trash</Button>
-                    <Button onClick={() => {this.displayInfo("other")}}>Other</Button>
-                    <Button onClick={() => {this.displayInfo("electedOfficials")}}>Elected Officials</Button>
+                    <Button onClick={() => {this.displayInfo("State Government")}}>State Officials</Button>
+                    <Button onClick={() => {this.displayInfo("electedOfficials")}}>Federal Legislative Officials</Button>
                 </ButtonGroup>
                 {this.state.displayInfo === "trash" && <Trashday trashDay={this.state.trashDay} />}
-                {this.state.displayInfo === "other" && <OtherInfo />}
+                {this.state.displayInfo === "State Government" && <Stategovernment electedInfo={this.state.electedInfo}/>}
                 {this.state.displayInfo === "electedOfficials"  && <ElectedOfficials electedInfo={this.state.electedInfo}/>}
             </div>
         )
@@ -179,52 +171,6 @@ class App extends React.Component{
             return this.renderSearch();
         }
       }
-}
-
-
-
-//This is for recycling information in Kansas City, MO
-class DisplayRecycle extends React.Component{
-    constructor(props){
-        super(props);
-    }
-    render(){
-        return(
-            <div className="display-text">
-                <h1>Some uniform information here, recycling or otherwise</h1>
-            </div>
-        );
-}
-}
-
-//This is the component that is going to display the council district
-class DisplayCouncil extends React.Component{
-    constructor(props){
-        super(props);
-        this.state = {inputData: myObject.cityCouncilDistrict};
-    }
-    render(){
-        return (
-            <div className="display-text">
-                <h1>The city council district is {this.state.inputData}.</h1>
-            </div>
-        );
-    }
-}
-
-//This is a test component to display the trashDay
-class DisplayTrash extends React.Component{
-    constructor(props){
-        super(props);
-        this.state = {inputData: myObject.trashPickUp};
-    }
-    render(){
-        return(
-            <div className="display-text">
-                <h1>Your trash is normally picked up on {this.state.inputData}.</h1>
-            </div>
-        );
-    }
 }
 
 ReactDOM.render(<App />, document.getElementById('root'));
