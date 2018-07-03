@@ -1,5 +1,4 @@
 import React from 'react';
-import './Stategovernment.css';
 
 export default function OtherInfo(props) {
   return (

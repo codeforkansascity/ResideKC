@@ -38,19 +38,7 @@ class App extends React.Component{
       }
 
       setAddress(address) {
-<<<<<<< HEAD
-          const alertArray = [address.split(',')[1], address.split(',')[2]];
-          //console.log(alertArray);
-          if (alertArray[0] !== " Kansas City" || alertArray[1] !== " MO"){
-              alert("Please select a Kansas City, Missouri address");
-          } else if (alertArray[0] == " Kansas City" && alertArray[1] == " MO"){
-              //console.log("If it works this will appear.");
-              //The Below text was taken from outside of the if then statement originaly.
-              const parsedAddress = address.split(',')[0];
-              this.setState({ address: parsedAddress })
-              this.handleSubmit(parsedAddress);
-          }
-=======
+
 
         var addressString = String(address)
 
@@ -66,7 +54,6 @@ class App extends React.Component{
           this.setState({ address: parsedAddress });
           this.handleSubmit(parsedAddress);
         }
->>>>>>> 84574de71595e90685b81df463925f6ec681726d
       }
 
       handleChange(event) {
