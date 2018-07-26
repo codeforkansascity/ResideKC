@@ -61,3 +61,9 @@ body {
 .display-text{
   color: #ffffff;
 }
+.base-cursor{
+  cursor: auto;
+}
+.waiting-cursor{
+  cursor: wait;
+}

@@ -4,13 +4,15 @@ import React from 'react';
 export default function ElectedOffialsInfo(props){
     return(
         <div className="otherInfo">
-            <h2> The Senators are {props.electedInfo[2][1]} and {props.electedInfo[3][1]}</h2>
+            <h2> The Senators are {props.electedFeds[0].name} and {props.electedFeds[1].name}</h2>
                 <div>
-                <img src ={props.electedInfo[2][2]} />
-                <img src ={props.electedInfo[3][2]} />
+                <img src ={props.electedFeds[0].photoURL} />
+                <img src ={props.electedFeds[1].photoURL} />
                 </div>
-            <h2>The House Representative is {props.electedInfo[4][1]}</h2>
-            <img src={props.electedInfo[4][2]} />
+            <h2>The House Representative is {props.electedFeds[2].name}</h2>
+            <img src={props.electedFeds[2].photoURL} />
         </div>
     );
 }
+
+//{this.props.x}
