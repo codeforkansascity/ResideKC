@@ -25,7 +25,11 @@ class App extends React.Component{
             address: '',
             trashDay: '',
             displayInfo: 'trash',
-            electedInfo: ''
+            electedInfo: '',
+            electedFeds: '',
+            electedState: '',
+            electedCity: '',
+            electedCounty: ''
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -38,7 +42,6 @@ class App extends React.Component{
       }
 
       setAddress(address) {
-
 
         var addressString = String(address)
 
@@ -65,12 +68,20 @@ class App extends React.Component{
             gotData: true,
             trashDay
         });
+        document.body.style.cursor = "auto";
       }
 
-      updateElectedO(electedInfo) {
+      updateElectedO(electedInfo, electedFeds, electedState, electedCity, electedCounty) {
           this.setState({
-              electedInfo
+              electedInfo,
+              electedFeds,
+              electedState,
+              electedCity,
+              electedCounty
           });
+          console.log(electedFeds);
+          //I THINK THIS IS WHERE CURSOR CHANGE ENDS
+          
       }
 
       displayInfo(displayInfo) {
@@ -78,6 +89,8 @@ class App extends React.Component{
       }
 
       handleSubmit(address) {
+        //I THINK THIS IS WHERE CURSOR CHANGE STARTS
+        document.body.style.cursor = "wait";
         //let enteredAddress = this.state.value;
         let sentAddress;
 
@@ -108,7 +121,6 @@ class App extends React.Component{
         //var addressInputSecond = "https://www.googleapis.com/civicinfo/v2/representatives?address=3534%20Cherry%20Street%2C%20Kansas%20City%2C%20MO&key=AIzaSyAfUjwu_XWbdnA-vGUWEb2UImFIJri_7Po";
         let addressInputSecond = "https://www.googleapis.com/civicinfo/v2/representatives?address=" + address + "%2C%20Kansas%20City%2C%20MO&key=AIzaSyAfUjwu_XWbdnA-vGUWEb2UImFIJri_7Po"
         //IF this call isn't working look at the address input above.
-        let senatorOne, senatorTwo;
         let senateCheck = 0; //This is here because there are 2 US senators if the officials array but only one in the offices array
         axios.get(addressInputSecond).then((response) => {
           var myResponse = response.data;
@@ -121,19 +133,44 @@ class App extends React.Component{
             if (p === undefined){
               p = "No photo available on google api."
             }
-            var xyz = [y, z, p];
-            myArray.push(xyz);
-            if (y == "United States Senator"){
+            var abc = { "title": y, "name": z, "photoURL": p, "arrayID": x};
+            //console.log(abc);
+            myArray.push(abc);
+            if (y == "United States Senate"){ //Keep an eye on this. Either I was messing up for a while or they changed United States Senator to United State Senate -Js
               senateCheck = 1;
             }
             x++;
           }
-         senatorOne = myArray[2][1];
-         senatorTwo = myArray[3][1];
-         console.log("The Senators are " + senatorOne + " and " +senatorTwo);
-         //let electedInfo = myArray[0][1];
+         let testVar = 0;
+         let fedArray =[], stateArray = [], cityArray = [], countyArray = [];
+         while (testVar < myArray.length){
+            if (myArray[testVar].title == "United States Senate" || myArray[testVar].title == "United States House of Representatives MO-05" || myArray[testVar].title == "United States House of Representatives MO-04" || myArray[testVar].title == "United States House of Representatives MO-06"){
+                fedArray.push(myArray[testVar]);
+             }
+            if (myArray[testVar].title == "Governor" || myArray[testVar].title == "Lieutenant Governor"){
+                stateArray.push(myArray[testVar]);
+            }
+            if(myArray[testVar].title.includes("MO State Senate") || myArray[testVar].title.includes("MO State House District") || myArray[testVar].title.includes("State Auditor") ||  myArray[testVar].title.includes("State Treasurer") || myArray[testVar].title.includes("Attorney General") || myArray[testVar].title.includes("Secretary of State")){
+                stateArray.push(myArray[testVar]);
+            }
+            if(myArray[testVar].title.includes("Mayor")){
+                cityArray.push(myArray[testVar]);
+            }
+            if (myArray[testVar].title.includes("Council") && myArray[testVar].title.includes("District At-Large")){
+                cityArray.push(myArray[testVar]);
+            }
+            if (myArray[testVar].title.includes("Sheriff") || myArray[testVar].title.includes("County Executive") || myArray[testVar].title.includes("Prosecuting Attorney") || myArray[testVar].title.includes("County Legislator") || myArray[testVar].title.includes("Assesor") || myArray[testVar].title.includes("Recorder") || myArray[testVar].title.includes("Collector") || myArray[testVar].title.includes("Circuit Clerk") || myArray[testVar].title.includes("County Clerk") || myArray[testVar].title.includes("Public Administrator") || myArray[testVar].title.includes("County Commissioner Chair")){
+                countyArray.push(myArray[testVar]);
+                //PLEASE NOTE THAT IF THERE IS A COUNTY AUDITOR AS IN CLAY COUNTY IT IS NOT PICKED UP HERE
+            }
+            testVar++;
+         }
+         //console.log(fedArray);
+         //console.log(stateArray);
+         //console.log(cityArray);
+         //console.log(countyArray)
          let electedInfo = myArray;
-        this.updateElectedO(electedInfo);
+        this.updateElectedO(electedInfo, fedArray, stateArray, cityArray, countyArray);
         });
         //***************END OF AXIOS CALL***************
       }
@@ -164,8 +201,8 @@ class App extends React.Component{
                     <Button onClick={() => {this.displayInfo("electedOfficials")}}>Federal Legislative Officials</Button>
                 </ButtonGroup>
                 {this.state.displayInfo === "trash" && <Trashday trashDay={this.state.trashDay} />}
-                {this.state.displayInfo === "State Government" && <Stategovernment electedInfo={this.state.electedInfo}/>}
-                {this.state.displayInfo === "electedOfficials"  && <ElectedOfficials electedInfo={this.state.electedInfo}/>}
+                {this.state.displayInfo === "State Government" && <Stategovernment electedState={this.state.electedState}/>}
+                {this.state.displayInfo === "electedOfficials"  && <ElectedOfficials electedFeds={this.state.electedFeds}/>}
             </div>
         )
       }
