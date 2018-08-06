@@ -44,7 +44,11 @@ class App extends React.Component{
       setAddress(address) {
 
         var addressString = String(address)
-
+        var addressArray = addressString.split("");
+        if (isNaN(addressArray[0])){
+            alert("Please choose an address that has a numerical address");
+        };
+        console.log(addressArray);
         //Check whether addressString contains both "kansas city" && "mo" before query.
         //Convert to lower case before check to avoid false error alerts when capitalization is nonstandard.
         if (!(addressString.toLowerCase().includes("kansas city")) || !(addressString.toLowerCase().includes("mo"))) {
@@ -79,9 +83,6 @@ class App extends React.Component{
               electedCity,
               electedCounty
           });
-          console.log(electedFeds);
-          //I THINK THIS IS WHERE CURSOR CHANGE ENDS
-          
       }
 
       displayInfo(displayInfo) {
@@ -90,6 +91,7 @@ class App extends React.Component{
 
       handleSubmit(address) {
         //I THINK THIS IS WHERE CURSOR CHANGE STARTS
+        console.log("TEST" + address);
         document.body.style.cursor = "wait";
         //let enteredAddress = this.state.value;
         let sentAddress;
