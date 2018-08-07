@@ -5,7 +5,7 @@ import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 import axios from 'axios';
 import { Button, ButtonGroup } from 'reactstrap';
-
+import {Logo} from './components/logo.js';
 import SearchBox from './components/SearchBox';
 import Trashday from './components/TrashDay';
 import Stategovernment from './components/Stategovernment';
@@ -179,7 +179,8 @@ class App extends React.Component{
 
       renderSearch() {
         return (
-            <div className="centerStuff">
+            <div className="mainContainer">
+                <Logo />
                 <form onSubmit={this.handleSubmit}>
                     <label className="mainLabel" >
                     Enter Your Address

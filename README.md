@@ -7,7 +7,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 1. To get the project to your local computer
 ```
-git clone https://github.com/Swiftyfast/my-react-github
+git clone https://github.com/codeforkansascity/ResideKC.git
 ```
 2. Create a branch and checkout to your branch
 ```

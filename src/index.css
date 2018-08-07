@@ -25,9 +25,12 @@ body {
 #root {
   background: none;
 }
-.centerStuff {
+.mainContainer {
   text-align: center;
-  margin-top: 35vh;
+  margin-top: 40px;
+}
+.logo {
+  margin-bottom: 110px;
 }
 .mainLabel{
   font-size: 2.313em;
