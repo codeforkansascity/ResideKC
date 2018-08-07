@@ -31,6 +31,7 @@ body {
 }
 .logo {
   margin-bottom: 110px;
+  width: 300px;
 }
 .mainLabel{
   font-size: 2.313em;
