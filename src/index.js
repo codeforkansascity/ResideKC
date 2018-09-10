@@ -38,7 +38,7 @@ class App extends React.Component{
         this.updateInfo = this.updateInfo.bind(this);
         this.displayInfo = this.displayInfo.bind(this);
         this.updateElectedO = this.updateElectedO.bind(this);
-        
+
       }
 
       setAddress(address) {
@@ -108,7 +108,7 @@ class App extends React.Component{
             let myResponse = response.data;
             myObject.KIVA = myResponse.data.city_id;
             myObject.cityCouncilDistrict =  myResponse.data.city_council_district;
-            let myTestKiva = "http://maps.kcmo.org/kcgis/rest/services/external/Tables/MapServer/2/" + myResponse.data.city_id + "?f=json&pretty=true";
+            let myTestKiva = "https://maps.kcmo.org/kcgis/rest/services/ParcelGeocodes/MapServer/1/" + myResponse.data.city_id + "?f=json&pretty=true";
             axios.get(myTestKiva).then((response) => {
                 //console.log("this part worked");
                 let mySubResponse = response.data;
