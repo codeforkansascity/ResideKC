@@ -11,10 +11,7 @@ import Trashday from './components/TrashDay';
 import Stategovernment from './components/Stategovernment';
 import ElectedOfficials from './components/FederalLegislative';
 
-let myObject = {"KIVA": "4", "cityCouncilDistrict": "", "trashPickUp": ""};
-
 class App extends React.Component{
-
     constructor(props) {
         super(props);
         this.state = {
@@ -38,11 +35,9 @@ class App extends React.Component{
         this.updateInfo = this.updateInfo.bind(this);
         this.displayInfo = this.displayInfo.bind(this);
         this.updateElectedO = this.updateElectedO.bind(this);
-
       }
 
       setAddress(address) {
-
         var addressString = String(address)
         var addressArray = addressString.split("");
         if (isNaN(addressArray[0])){
@@ -90,53 +85,36 @@ class App extends React.Component{
       }
 
       handleSubmit(address) {
-        //I THINK THIS IS WHERE CURSOR CHANGE STARTS
-        console.log("TEST" + address);
         document.body.style.cursor = "wait";
-        //let enteredAddress = this.state.value;
         let sentAddress;
-
         let testURL = "http://dev-api.codeforkc.org//address-attributes/V0/1407%20Grand%20blvd?city=Kansas%20City&state=mo";
         if (address === ""){
                 sentAddress = testURL;
         } else {
-            sentAddress = "http://dev-api.codeforkc.org//address-attributes/V0/" + address + "?city=Kansas%20City&state=mo";
+            sentAddress = "https://dev-api.codeforkc.org//address-attributes/V0/" + address + "?city=Kansas%20City&state=mo";
         }
-        // THIS RIGHT HEREconsole.log(address);
-        //event.preventDefault();
         axios.get(sentAddress).then((response) => {
             let myResponse = response.data;
-            myObject.KIVA = myResponse.data.city_id;
-            myObject.cityCouncilDistrict =  myResponse.data.city_council_district;
             let myTestKiva = "https://maps.kcmo.org/kcgis/rest/services/ParcelGeocodes/MapServer/1/" + myResponse.data.city_id + "?f=json&pretty=true";
             axios.get(myTestKiva).then((response) => {
-                //console.log("this part worked");
                 let mySubResponse = response.data;
                 let trashDay = mySubResponse.feature.attributes.TRASHDAY;
-               // THISconsole.log(mySubResponse.feature.attributes);
-                // THISconsole.log(mySubResponse.feature.attributes.TRASHDAY);
-
                 this.updateInfo(trashDay);
             });
         });
         //***************HERE IS THE SECOND AXIOS CALL. THIS COULD BE SOMEWHERE ELSE***************
-        //var addressInputSecond = "https://www.googleapis.com/civicinfo/v2/representatives?address=3534%20Cherry%20Street%2C%20Kansas%20City%2C%20MO&key=AIzaSyAfUjwu_XWbdnA-vGUWEb2UImFIJri_7Po";
         let addressInputSecond = "https://www.googleapis.com/civicinfo/v2/representatives?address=" + address + "%2C%20Kansas%20City%2C%20MO&key=AIzaSyAfUjwu_XWbdnA-vGUWEb2UImFIJri_7Po"
-        //IF this call isn't working look at the address input above.
         let senateCheck = 0; //This is here because there are 2 US senators if the officials array but only one in the offices array
         axios.get(addressInputSecond).then((response) => {
-          var myResponse = response.data;
+          var myResponse = response.data, x = 0, myArray = [];
           var offices = myResponse.offices;
           var officials = myResponse.officials;
-          var x = 0;
-          var myArray = [];
           while (x < offices.length){
             var y = offices[x - senateCheck].name, z = officials[x].name, p = officials[x].photoUrl;
             if (p === undefined){
               p = "No photo available on google api."
             }
             var abc = { "title": y, "name": z, "photoURL": p, "arrayID": x};
-            //console.log(abc);
             myArray.push(abc);
             if (y == "United States Senate"){ //Keep an eye on this. Either I was messing up for a while or they changed United States Senator to United State Senate -Js
               senateCheck = 1;
@@ -167,10 +145,6 @@ class App extends React.Component{
             }
             testVar++;
          }
-         //console.log(fedArray);
-         //console.log(stateArray);
-         //console.log(cityArray);
-         //console.log(countyArray)
          let electedInfo = myArray;
         this.updateElectedO(electedInfo, fedArray, stateArray, cityArray, countyArray);
         });
