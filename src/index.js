@@ -90,7 +90,9 @@ class App extends React.Component {
       handleSubmit(address) {
         document.body.style.cursor = "wait";
         let sentAddress;
-        let testURL = "http://dev-api.codeforkc.org//address-attributes/V0/1407%20Grand%20blvd?city=Kansas%20City&state=mo";
+
+        let testURL = "https://dev-api.codeforkc.org//address-attributes/V0/1407%20Grand%20blvd?city=Kansas%20City&state=mo";
+
         if (address === ""){
                 sentAddress = testURL;
 
