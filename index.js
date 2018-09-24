@@ -203,7 +203,7 @@ class App extends React.Component{
 
       renderInfo() {
         return (
-            <div className="info-page">
+            <div className="mainContainer">
                 <Logo />
                 <SearchBox setAddress={this.setAddress} address={this.state.address} />
                 <ButtonGroup>
@@ -220,7 +220,7 @@ class App extends React.Component{
 	  
 	  renderLoadingInfo() {
         return (
-            <div className="info-page">
+            <div className="mainContainer">
                 <Logo />
                 <SearchBox setAddress={this.setAddress} address={this.state.address} />
                 <ButtonGroup>
