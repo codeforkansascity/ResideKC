@@ -10,10 +10,8 @@ import Trashday from './components/TrashDay';
 import Stategovernment from './components/Stategovernment';
 import ElectedOfficials from './components/FederalLegislative';
 
-const myObject = { "KIVA": "4", "cityCouncilDistrict": "", "trashPickUp": "" };
 
 class App extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -41,7 +39,6 @@ class App extends React.Component {
     }
 
     setAddress(address) {
-
         var addressString = String(address)
         var addressArray = addressString.split("");
         if (isNaN(addressArray[0])) {
@@ -73,38 +70,37 @@ class App extends React.Component {
             trashDay
         });
         document.body.style.cursor = "auto";
-    }
 
-    updateElectedO(electedInfo, electedFeds, electedState, electedCity, electedCounty) {
-        this.setState({
-            electedInfo,
-            electedFeds,
-            electedState,
-            electedCity,
-            electedCounty
-        });
-    }
+      }
 
-    displayInfo(displayInfo) {
-        this.setState({ displayInfo });
-    }
+      updateElectedO(electedInfo, electedFeds, electedState, electedCity, electedCounty) {
+          this.setState({
+              electedInfo,
+              electedFeds,
+              electedState,
+              electedCity,
+              electedCounty
+          });
+      }
 
-    handleSubmit(address) {
-        //I THINK THIS IS WHERE CURSOR CHANGE STARTS
+      displayInfo(displayInfo) {
+          this.setState({ displayInfo });
+      }
+
+      handleSubmit(address) {
         document.body.style.cursor = "wait";
         let sentAddress;
+        let testURL = "http://dev-api.codeforkc.org//address-attributes/V0/1407%20Grand%20blvd?city=Kansas%20City&state=mo";
+        if (address === ""){
+                sentAddress = testURL;
 
-        const testURL = "http://dev-api.codeforkc.org//address-attributes/V0/1407%20Grand%20blvd?city=Kansas%20City&state=mo";
-        if (address === "") {
-            sentAddress = testURL;
         } else {
-            sentAddress = "http://dev-api.codeforkc.org//address-attributes/V0/" + address + "?city=Kansas%20City&state=mo";
+            sentAddress = "https://dev-api.codeforkc.org//address-attributes/V0/" + address + "?city=Kansas%20City&state=mo";
         }
 
         axios.get(sentAddress).then((response) => {
-            const myResponse = response.data;
-            myObject.KIVA = myResponse.data.city_id;
-            myObject.cityCouncilDistrict = myResponse.data.city_council_district;
+            let myResponse = response.data;
+
             let myTestKiva = "https://maps.kcmo.org/kcgis/rest/services/ParcelGeocodes/MapServer/1/" + myResponse.data.city_id + "?f=json&pretty=true";
             axios.get(myTestKiva).then((response) => {
                 let mySubResponse = response.data;
@@ -113,11 +109,10 @@ class App extends React.Component {
             });
         });
         //***************HERE IS THE SECOND AXIOS CALL. THIS COULD BE SOMEWHERE ELSE***************
-        //var addressInputSecond = "https://www.googleapis.com/civicinfo/v2/representatives?address=3534%20Cherry%20Street%2C%20Kansas%20City%2C%20MO&key=AIzaSyAfUjwu_XWbdnA-vGUWEb2UImFIJri_7Po";
         let addressInputSecond = "https://www.googleapis.com/civicinfo/v2/representatives?address=" + address + "%2C%20Kansas%20City%2C%20MO&key=AIzaSyAfUjwu_XWbdnA-vGUWEb2UImFIJri_7Po"
-        //IF this call isn't working look at the address input above.
         let senateCheck = 0; //This is here because there are 2 US senators if the officials array but only one in the offices array
         axios.get(addressInputSecond).then((response) => {
+
             var myResponse = response.data;
             var offices = myResponse.offices;
             var officials = myResponse.officials;
@@ -159,8 +154,11 @@ class App extends React.Component {
                 }
                 testVar++;
             }
+           // testVar++;
+        // }
             const electedInfo = myArray;
             this.updateElectedO(electedInfo, fedArray, stateArray, cityArray, countyArray);
+
         });
         //***************END OF AXIOS CALL***************
     }
