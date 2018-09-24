@@ -1,7 +1,7 @@
 import React from 'react';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 
-const renderSuggestion = ({suggestion}) => (
+const renderSuggestion = ({ suggestion }) => (
   <div>{suggestion}</div>
 );
 
@@ -20,11 +20,10 @@ export default class SearchBar extends React.Component {
     super(props);
 
     const bounds = new window.google.maps.LatLngBounds(
-      new window.google.maps.LatLng(54.69726685890506,-2.7379201682812226),
+      new window.google.maps.LatLng(54.69726685890506, -2.7379201682812226),
       new window.google.maps.LatLng(55.38942944437183, -1.2456105979687226)
     );
-    console.log(bounds);
-    const searchOptions = { 
+    const searchOptions = {
       bounds,
       strictBounds: true
     }
@@ -33,14 +32,12 @@ export default class SearchBar extends React.Component {
       address: props.address ? props.address : '',
       searchOptions
     };
-    console.log(this.state);
     this.handleSelect = this.handleSelect.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleSelect(address) {
     this.setState({ address });
-    console.log(address);
     this.props.setAddress(address);
   }
 
@@ -51,7 +48,7 @@ export default class SearchBar extends React.Component {
   render() {
     const inputProps = {
       type: 'text',
-      value : this.state.address,
+      value: this.state.address,
       onChange: this.handleChange,
       autoFocus: true,
       placeholder: 'What is your address?'
