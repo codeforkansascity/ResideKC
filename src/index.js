@@ -96,11 +96,11 @@ class App extends React.Component{
         //let enteredAddress = this.state.value;
         let sentAddress;
 
-        let testURL = "http://dev-api.codeforkc.org//address-attributes/V0/1407%20Grand%20blvd?city=Kansas%20City&state=mo";
+        let testURL = "https://dev-api.codeforkc.org//address-attributes/V0/1407%20Grand%20blvd?city=Kansas%20City&state=mo";
         if (address === ""){
                 sentAddress = testURL;
         } else {
-            sentAddress = "http://dev-api.codeforkc.org//address-attributes/V0/" + address + "?city=Kansas%20City&state=mo";
+            sentAddress = "https://dev-api.codeforkc.org//address-attributes/V0/" + address + "?city=Kansas%20City&state=mo";
         }
         // THIS RIGHT HEREconsole.log(address);
         //event.preventDefault();
