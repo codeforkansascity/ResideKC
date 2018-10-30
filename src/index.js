@@ -40,6 +40,7 @@ class App extends React.Component {
 
     setAddress(address) {
         var addressString = String(address)
+		
         var addressArray = addressString.split("");
         if (isNaN(addressArray[0])) {
             alert("Please choose an address that has a numerical address");
@@ -100,7 +101,7 @@ class App extends React.Component {
             sentAddress = "https://dev-api.codeforkc.org//address-attributes/V0/" + address + "?city=Kansas%20City&state=mo";
         }
 
-        axios.get(sentAddress).then((response) => {
+        axios.get(sentAddress).then((response) => { // Added the .catch line that will catch 404s from this method
             let myResponse = response.data;
 
             let myTestKiva = "https://maps.kcmo.org/kcgis/rest/services/ParcelGeocodes/MapServer/1/" + myResponse.data.city_id + "?f=json&pretty=true";
@@ -109,7 +110,18 @@ class App extends React.Component {
                 let trashDay = mySubResponse.feature.attributes.TRASHDAY;
                 this.updateInfo(trashDay);
             });
-        });
+        })
+		.catch((error) => { // if no address/KIVA is found
+			console.log("Cannot find Kiva");
+			this.setState({
+				gotData: false
+			});
+			
+			document.body.style.cursor = "default"; // changes the cursor to the normal pointer to singal the user that nothing is loading
+			alert("Please make sure the address you are entering is in the Kansas City area and not in a surrounding area like North Kansas City or Liberty.");
+		});
+		console.log("Kiva found")
+		
         //***************HERE IS THE SECOND AXIOS CALL. THIS COULD BE SOMEWHERE ELSE***************
         let addressInputSecond = "https://www.googleapis.com/civicinfo/v2/representatives?address=" + address + "%2C%20Kansas%20City%2C%20MO&key=AIzaSyAfUjwu_XWbdnA-vGUWEb2UImFIJri_7Po"
         let senateCheck = 0; //This is here because there are 2 US senators if the officials array but only one in the offices array
@@ -184,7 +196,8 @@ class App extends React.Component {
 
     renderInfo() {
         return (
-            <div className="info-page">
+            <div className="mainContainer">
+                <Logo />
                 <SearchBox setAddress={this.setAddress} address={this.state.address} />
                 <ButtonGroup>
                     <Button onClick={() => { this.displayInfo("trash") }}>Trash</Button>

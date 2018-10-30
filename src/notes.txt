@@ -1,0 +1,194 @@
+Issue addesses:
+508 East 27th Street, Kansas City, MO, USA - Curuch - In Area*** City PIN 195555 
+418 Prospect Avenue, Kansas City, MO, USA - House - In Area*** City PIN: 41019
+1234 Howell Street, Kansas City, MO, USA - NKC - Out of Area
+
+http://dev-api.codeforkc.org//address-attributes/V0/
+
+
+2700 Howell Terrace, Kansas City, MO, USA - NKC - Out of Area
+406 East 30th Avenue, Kansas City, MO, USA - NKC - Out of Area
+1703 Northeast 67th Terrace, Kansas City, MO, USA - Gladstone - Out of Area
+5415 North Wyandotte Street, Kansas City, MO, USA - Gladstone - Out of Area
+2923 Northeast Cates Street, Kansas City, MO, USA - NKC - Out of Area
+1203 Northeast 62nd Street, Kansas City, MO, USA - Gladstone - Out of Area
+
+1337, 1712 Main St #200, Kansas City, MO 64108 - Intersection P/L, Ally Crossroads
+
+Tested to work:
+1712 Main St, Kansas City, MO 64108 - Monday
+6942 North Denver Avenue, Kansas City, MO, USA - Friday
+8732 North Prospect Avenue, Kansas City, MO, USA - Wednesday
+3560 Broadway Boulevard, Kansas City, MO, USA - Monday
+6942 Northwest Prairie View Road, Kansas City, MO, USA - Thursday
+1504 NE 52nd St, Kansas City, MO 64118, USA - Tuesday
+6108 Prospect Avenue, Kansas City, MO, USA - Friday
+
+Database result for: 1712 Main St, Kansas City, MO 64108
+{
+  "feature" : 
+  {
+    "attributes" : {
+      "OBJECTID" : 259999, 
+      "KIVA_PIN" : "259999", 
+      "COUNCILDISTRICT" : "4", 
+      "SCHOOLDISTRICT" : "KANSAS CITY MISSOURI 110", 
+      "NEIGHBORHOODCENSUS" : "Crossroads", 
+      "BULKYDAY" : "1st & 4th Monday", 
+      "TRASHDAY" : "Monday", 
+      "SUBDIVISION" : null, 
+      "ZONING" : "DX-15", 
+      "ZIP" : "64108", 
+      "RA_TWN_SEC" : "s334905", 
+      "RIVER" : null, 
+      "POLICEDIVISION" : "Central", 
+      "TRASHPROVIDER" : "City", 
+      "SP_X" : 2764898.85364409, 
+      "SP_Y" : 1065508.88221151, 
+      "AREA_SQ_FT" : 7957.77688112, 
+      "COUNTY" : "Jackson", 
+      "NEIGHBORHOODCENSUS_ID" : "7", 
+      "INSPECTIONAREA" : "7", 
+      "SOLIDWASTECOLLECTIONZONE" : "Central", 
+      "MAINTENANCE_DIST_PW" : "D2", 
+      "PARKREGION" : "Central", 
+      "DD_X" : -94.58388995, 
+      "DD_Y" : 39.09291983, 
+      "EDC" : "West", 
+      "IMPACTFEEZONE" : "EXEMPT", 
+      "WSINSPECTORROUTE" : "2", 
+      "WSMETERREADROUTE" : "9"
+    }
+  }
+}
+
+
+API vs  Framework
+Us API for furture project with LaunchCode
+
+
+		sprint
+		honeywell
+		cerner
+		
+		earnin
+		soft____ email/marketing
+
+From: http://dev-api.codeforkc.org//address-attributes/V0/6942 North Denver Avenue?city=Kansas%20City&state=mo {
+	"code":200,
+	"status":"success",
+	"message":"",
+	"data":{
+		"id":193407,
+		"single_line_address":"6942 N DENVER AVE, KANSAS CITY, MO",
+		"street_number":"6942",
+		"pre_direction":"N",
+		"street_name":"DENVER",
+		"street_type":"AVE",
+		"post_direction":null,
+		"internal":null,
+		"city":"KANSAS CITY",
+		"state":"MO",
+		"zip":"64119",
+		"zip4":"",
+		"longitude":
+		"-94.5192980635",
+		"latitude":"39.2212861447",
+		"added":"2015-08-15 02:05:10.501474",
+		"changed":"2016-07-08 03:24:53.681097",
+		"street_address":"6942 N DENVER AVE",
+		"address_id":193407,
+		"city_id":228432,
+		"city_land_use_code":"7320 - Single Family Common Area",
+		"city_land_use":"Residential",
+		"city_classification":"R-7.5",
+		"city_sub_class":"R1a",
+		"city_nighborhood":"",
+		"city_nhood":"Shoal Creek",
+		"city_council_district":"1",
+		"city_land_bank_property":0,
+		"city_tif":null,
+		"city_police_division":null,
+		"city_neighborhood_census":"Shoal Creek (240)",
+		"city_vacant_parcel":0,
+		"county_id":"CL1441600070160001",
+		"census_block_2010_name":"Block 3018",
+		"census_block_2010_id":"3018",
+		"census_track_name":"Census Tract 212.06",
+		"census_track_id":"021206",
+		"census_zip":"64119",
+		"census_county_id":"047",
+		"census_county_state_id":"29",
+		"census_longitude":"-94.51901",
+		"census_latitude":"39.221428",
+		"census_tiger_line_id":"627192498",
+		"census_metro_area":"Kansas City, MO-KS",
+		"county_parcel_number":null,
+		"county_name":null,
+		"county_tif_district":null,
+		"county_tif_project":null,
+		"county_neighborhood_code":null,
+		"county_pca_code":null,
+		"county_land_use_code":null,
+		"county_tca_code":null,
+		"county_document_number":null,
+		"county_book_number":null,
+		"county_conveyance_area":null,
+		"county_conveyance_designator":null,
+		"county_legal_description":null,
+		"county_object_id":null,
+		"county_page_number":null,
+		"county_delinquent_tax_2010":null,
+		"county_delinquent_tax_2011":null,
+		"county_delinquent_tax_2012":null,
+		"county_delinquent_tax_2013":null,
+		"county_delinquent_tax_2014":null,
+		"county_delinquent_tax_2015":null,
+		"county_delinquent_tax_2016":null,
+		"county_delinquent_tax_2017":null,
+		"county_situs_address":null,
+		"county_situs_city":null,
+		"county_situs_state":null,
+		"county_situs_zip":null,
+		"county_owner":null,
+		"county_owner_address":null,
+		"county_owner_city":null,
+		"county_owner_state":null,
+		"county_owner_zip":null,
+		"county_stated_area":null,
+		"county_tot_sqf_l_area":null,
+		"county_year_built":null,
+		"county_property_area":null,
+		"county_property_picture":null,
+		"county_property_report":null,
+		"county_market_value":null,
+		"county_assessed_value":null,
+		"county_assessed_improvement":null,
+		"county_assessed_land":null,
+		"county_taxable_value":null,
+		"county_mtg_co":null,
+		"county_mtg_co_address":null,
+		"county_mtg_co_city":null,
+		"county_mtg_co_state":null,
+		"county_mtg_co_zip":null,
+		"county_common_area":null,
+		"county_floor_designator":null,
+		"county_floor_name_designator":null,
+		"county_exempt":null,
+		"county_complex_name":null,
+		"county_cid":null,
+		"county_eff_from_date":null,
+		"county_eff_to_date":null,
+		"county_extract_date":null,
+		"county_shape_st_area":null,
+		"county_shape_st_lenght":null,
+		"county_shape_st_area_1":null,
+		"county_shape_st_length_1":null,
+		"county_shape_st_legnth_2":null,
+		"county_shape_st_area_2":null,
+		"county_sim_con_div_type":null,
+		"county_tax_year":null,
+		"county_type":null,
+		"county_z_designator":null
+	}
+}
