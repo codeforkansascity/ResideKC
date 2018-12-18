@@ -101,7 +101,7 @@ class App extends React.Component {
             sentAddress = "https://dev-api.codeforkc.org//address-attributes/V0/" + address + "?city=Kansas%20City&state=mo";
         }
 
-        axios.get(sentAddress).then((response) => { // Added the .catch line that will catch 404s from this method
+        axios.get(sentAddress).then((response) => {
             let myResponse = response.data;
 
             let myTestKiva = "https://maps.kcmo.org/kcgis/rest/services/ParcelGeocodes/MapServer/1/" + myResponse.data.city_id + "?f=json&pretty=true";
@@ -112,7 +112,6 @@ class App extends React.Component {
             });
         })
 		.catch((error) => { // if no address/KIVA is found
-			console.log("Cannot find Kiva");
 			this.setState({
 				gotData: false
 			});
