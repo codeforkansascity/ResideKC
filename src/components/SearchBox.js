@@ -1,51 +1,46 @@
 import React from 'react';
-import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
+import PlacesAutocomplete from 'react-places-autocomplete';
 
-const renderSuggestion = ({ suggestion }) => (
-  <div>{suggestion}</div>
-);
 
-const shouldFetchSuggestions = ({ value }) => value.length > 2;
-
-const onError = (status, clearSuggestions) => {
-  console.log(
-    'Error while fetching suggestions from API',
-    status
-  )
-  clearSuggestions();
+const bounds = new window.google.maps.LatLngBounds(
+  new window.google.maps.LatLng(54.69726685890506, -2.7379201682812226),
+  new window.google.maps.LatLng(55.38942944437183, -1.2456105979687226)
+)
+const searchOptions = {
+  bounds,
+  strictBounds: true
 }
 
-export default class SearchBar extends React.Component {
-  constructor(props) {
-    super(props);
-
-    const bounds = new window.google.maps.LatLngBounds(
-      new window.google.maps.LatLng(54.69726685890506, -2.7379201682812226),
-      new window.google.maps.LatLng(55.38942944437183, -1.2456105979687226)
-    );
-    const searchOptions = {
-      bounds,
-      strictBounds: true
-    }
-
-    this.state = {
-      address: props.address ? props.address : '',
-      searchOptions
-    };
-    this.handleSelect = this.handleSelect.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+class SearchBar extends React.Component {
+  state = {
+    address: this.props.address ? this.props.address : '',
+    searchOptions
   }
 
-  handleSelect(address) {
+  handleSelect = address => {
     this.setState({ address });
     this.props.setAddress(address);
   }
 
-  handleChange(address) {
+  handleChange = address => {
     this.setState({ address })
   }
 
   render() {
+    const renderSuggestion = ({ suggestion }) => (
+      <div>{suggestion}</div>
+    );
+    
+    const shouldFetchSuggestions = ({ value }) => value.length > 2;
+    
+    // const onError = (status, clearSuggestions) => {
+    //   console.log(
+    //     'Error while fetching suggestions from API',
+    //     status
+    //   )
+    //   clearSuggestions();
+    // }
+
     const inputProps = {
       type: 'text',
       value: this.state.address,
@@ -68,3 +63,5 @@ export default class SearchBar extends React.Component {
     )
   }
 }
+
+export default SearchBar;

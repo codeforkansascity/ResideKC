@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function TrashDay(props) {
+const TrashDay = props =>  {
 
     return (
         <div className="trashDay">
@@ -8,3 +8,5 @@ export default function TrashDay(props) {
         </div>
     )
 }
+
+export default TrashDay;
