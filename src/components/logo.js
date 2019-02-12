@@ -3,7 +3,7 @@ import logo from '../assets/residekc_logo.svg'
 
 const Logo = () => {
     return (
-      <div className="container" id="body">
+      <div>
         <img src={logo} alt="ResideKC Logo" className='logo' />
       </div>
     )

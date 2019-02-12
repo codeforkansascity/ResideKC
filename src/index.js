@@ -1,28 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import './scss/base.scss';
 import axios from 'axios';
-import StateGovernmentInfo from './components/StateGovernmentInfo';
-import FederalOfficialsInfo from './components/FederalOfficialsInfo';
-import Trashday from './components/TrashDay';
-import './index.css';
 import registerServiceWorker from './registerServiceWorker';
-import { Button, ButtonGroup } from 'reactstrap';  // JZ: We probably dont need this dependecy
-import Logo from './components/logo';  
+import RenderInfo from './components/RenderInfo';
+import RenderSearch from './components/RenderSearch';
 import SearchBox from './components/SearchBox';
-
-
-
-//  JZ: Need to break into smaller components, starting with breaking this into an 'App' component, Index.js should only import the <App /> and ReactDOM render it
+import logo from './assets/residekc_logo.svg'
 
 class App extends React.Component {
     state = {
-            value: '',
             gotData: false,
             councilDistrict: '',
             kivaPIN: '',
             address: '',
-            trashDay: '',
-            displayInfo: 'trash',
+            trashInfo: {
+                trashDay: '',
+                trashProvider: '',
+                bulkyItems: ''
+            },
             electedInfo: '',
             electedFeds: '',
             electedState: '',
@@ -33,9 +29,11 @@ class App extends React.Component {
 
     //  Take address, parse, set state and submit adress, check if address is valid
     setAddress = address => {
+        console.log(address);
         const addressString = String(address);
 		
-        let addressArray = addressString.split("");
+        let addressArray = String(address).split("");
+
 
         if (isNaN(addressArray[0])) {
             alert("Please choose an address that has a numerical address");
@@ -45,12 +43,8 @@ class App extends React.Component {
          * Checks whether addressString contains both "kansas city" && "mo" before query.
          * Converts to lower case before check to avoid false error alerts when capitalization is nonstandard.
          */
-
-         // JZ: We could write this as a terany operators
         if (!(addressString.toLowerCase().includes("kansas city")) || !(addressString.toLowerCase().includes("mo"))) {
-
             //Address does not contain both 'kansas city' && 'mo'
-            //Show error
             alert("Please choose another address")
         } else {
             const parsedAddress = addressString.split(',')[0];
@@ -59,20 +53,19 @@ class App extends React.Component {
         }
     }
 
-    //  JZ: Write description of what function does here 
-    handleChange = event => {
-        this.setState({ value: event.target.value });
-    }
-
     //  JZ: Convert to arrow fucntion & { Write description of what function does here }
-    updateInfo = trashDay => {
+    updateInfo = (trashDay, trashProvider, bulkyItems) => {
         this.setState({
             gotData: true,
-            trashDay
+            trashInfo: {
+                trashDay: trashDay,
+                trashProvider: trashProvider,
+                bulkyItems: bulkyItems
+            },
         })
       }
 
-      //  JZ: Convert to arrow fucntion & { Write description of what function does here }
+      //  Updates state with elected officials
       updateElectedO = (electedInfo, electedFeds, electedState, electedCity, electedCounty) => {
           this.setState({
               electedInfo,
@@ -83,27 +76,37 @@ class App extends React.Component {
           });
       }
 
-      //  JZ:  Write description of what function does here 
-      displayInfo = displayInfo => {
-          this.setState({ displayInfo });
-      }
 
-      //  JZ:  Write description of what function does here }
+
+    //   handleSubmit = async address => {
+    //     const response = await kcdata.get('/search', {
+    //         params: {
+    //             q: term
+    //         }
+    //     });
+    //     this.setState({
+    //         videos:response.data.items,
+    //         selectedVideo: response.data.items[0]
+    //     });
+    //    };
+
+      //  Submits address to APIs
       handleSubmit = address => {
         let sentAddress = `https://dev-api.codeforkc.org//address-attributes/V0/${address}?city=Kansas%20City&state=mo`;
-        
-        console.log(`this is the address: ${address}`); 
-         
-
+        // Call to City API for KIVA pin
         axios.get(sentAddress).then((response) => {
             let myResponse = response.data;
+            let cityID = "https://maps.kcmo.org/kcgis/rest/services/ParcelGeocodes/MapServer/1/" + myResponse.data.city_id + "?f=json&pretty=true";
 
-            let myTestKiva = "https://maps.kcmo.org/kcgis/rest/services/ParcelGeocodes/MapServer/1/" + myResponse.data.city_id + "?f=json&pretty=true";
-            axios.get(myTestKiva).then((response) => {
+            // Uses KIVA pinn to get trash day info
+            axios.get(cityID).then((response) => {
                 let mySubResponse = response.data;
                 let trashDay = mySubResponse.feature.attributes.TRASHDAY;
-                this.updateInfo(trashDay);
-            });
+                let trashProvider =  mySubResponse.feature.attributes.TRASHPROVIDER;
+                let bulkyItems = mySubResponse.feature.attributes.BULKYDAY;
+
+                this.updateInfo(trashDay, trashProvider, bulkyItems);
+            });          
         })
 		.catch((error) => { // if no address/KIVA is found
 			this.setState({
@@ -112,17 +115,17 @@ class App extends React.Component {
             
 			alert("Please make sure the address you are entering is in the Kansas City area and not in a surrounding area like North Kansas City or Liberty.");
         });
-        
-
 
 		console.log("Kiva found")
-		
-        //***************HERE IS THE SECOND AXIOS CALL. THIS COULD BE SOMEWHERE ELSE***************
-        let addressInputSecond = "https://www.googleapis.com/civicinfo/v2/representatives?address=" + address + "%2C%20Kansas%20City%2C%20MO&key=AIzaSyAfUjwu_XWbdnA-vGUWEb2UImFIJri_7Po"
+
+
+        // Building address string for Google Civic info
+        let googleCivicInfoAddress = "https://www.googleapis.com/civicinfo/v2/representatives?address=" + address + "%2C%20Kansas%20City%2C%20MO&key=AIzaSyAfUjwu_XWbdnA-vGUWEb2UImFIJri_7Po"
+
         let senateCheck = 0; //This is here because there are 2 US senators if the officials array but only one in the offices array
 
-
-        axios.get(addressInputSecond).then((response) => {
+        // Call to Google Civic info API
+        axios.get(googleCivicInfoAddress).then((response) => {
 
             const myResponse = response.data;
             const offices = myResponse.offices;
@@ -143,8 +146,10 @@ class App extends React.Component {
                 x++;
             }
 
+            
             let testVar = 0;
             let fedArray = [], stateArray = [], cityArray = [], countyArray = [];
+
             while (testVar < myArray.length) {
                 if (myArray[testVar].title === "United States Senate" || myArray[testVar].title === "United States House of Representatives MO-05" || myArray[testVar].title === "United States House of Representatives MO-04" || myArray[testVar].title === "United States House of Representatives MO-06") {
                     fedArray.push(myArray[testVar]);
@@ -176,44 +181,14 @@ class App extends React.Component {
         //***************END OF AXIOS CALL***************
     }
 
-    renderSearch = () => {
-        return (
-            <div className="mainContainer">
-                <Logo />
-                <form onSubmit={this.handleSubmit}>
-                    <label className="mainLabel" >
-                        Enter Your Address
-                    <SearchBox setAddress={this.setAddress} />
-                    </label>
-                    <div>
-                        <input type="submit" value="Submit" className="redButton" />
-                    </div>
-                </form>
-            </div>
-        );
-    }
-
-    renderInfo = () => {
-        return (
-            <div className="mainContainer">
-                <Logo />
-                <SearchBox setAddress={this.setAddress} address={this.state.address} />
-                <ButtonGroup>
-                    <Button onClick={() => { this.displayInfo("trash") }}>Trash</Button>
-                    <Button onClick={() => { this.displayInfo("State Government") }}>State Officials</Button>
-                    <Button onClick={() => { this.displayInfo("electedOfficials") }}>Federal Legislative Officials</Button>
-                </ButtonGroup>
-                {this.state.displayInfo === "trash" && <Trashday trashDay={this.state.trashDay} />}
-                {this.state.displayInfo === "State Government" && <StateGovernmentInfo electedState={this.state.electedState} />}
-                {this.state.displayInfo === "electedOfficials" && < FederalOfficialsInfo electedFeds={this.state.electedFeds} />}
-            </div>
-        )
-    }
-
-
     render() {
         return (
-            this.state.gotData ? this.renderInfo() :  this.renderSearch()
+            <div className="container">
+                <img src={logo} alt="ResideKC Logo" className='logo' />
+
+                { this.state.gotData ? <RenderInfo trashInfo={this.state.trashInfo} displayInfo={this.displayInfo} setAddress={this.setAddress} address={this.state.address} electedState={this.state.electedState}  electedFeds={this.state.electedFeds} /> :  <RenderSearch handleSubmit={this.handleSubmit} setAddress={this.setAddress}/> }
+
+            </div>
         ) 
     }
 }
