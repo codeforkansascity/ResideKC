@@ -7,37 +7,32 @@ import RenderInfo from './components/RenderInfo';
 import RenderSearch from './components/RenderSearch';
 import SearchBox from './components/SearchBox';
 import logo from './assets/residekc_logo.svg'
+import kcdata from './apis/kcdata';
 
 class App extends React.Component {
     state = {
-            gotData: false,
-            councilDistrict: '',
-            kivaPIN: '',
-            address: '',
-            trashInfo: {
-                trashDay: '',
-                trashProvider: '',
-                bulkyItems: ''
-            },
-            electedInfo: '',
-            electedFeds: '',
-            electedState: '',
-            electedCity: '',
-            electedCounty: ''
+        gotData: false,
+        councilDistrict: '',
+        kivaPIN: '',
+        address: '',
+        trashInfo: {
+            trashDay: '',
+            trashProvider: '',
+            bulkyItems: ''
+        },
+        offices: [],
+        officials: []       
     }
         
 
-    //  Take address, parse, set state and submit adress, check if address is valid
+    // Take address, parse, set state and submit adress, check if address is valid, start in Searchbox.js
     setAddress = address => {
-        console.log(address);
         const addressString = String(address);
-		
+
+        // Checks to see if first char in string is a number
         let addressArray = String(address).split("");
+        if (isNaN(addressArray[0])) { alert("Please choose an address that has a numerical address"); };
 
-
-        if (isNaN(addressArray[0])) {
-            alert("Please choose an address that has a numerical address");
-        };
 
         /**
          * Checks whether addressString contains both "kansas city" && "mo" before query.
@@ -49,11 +44,10 @@ class App extends React.Component {
         } else {
             const parsedAddress = addressString.split(',')[0];
             this.setState({ address: parsedAddress });
-            this.handleSubmit(parsedAddress);
+            this.handleSubmit(parsedAddress);  //submitting ie: 2515 Holmes Street
         }
     }
 
-    //  JZ: Convert to arrow fucntion & { Write description of what function does here }
     updateInfo = (trashDay, trashProvider, bulkyItems) => {
         this.setState({
             gotData: true,
@@ -63,130 +57,70 @@ class App extends React.Component {
                 bulkyItems: bulkyItems
             },
         })
-      }
-
-      //  Updates state with elected officials
-      updateElectedO = (electedInfo, electedFeds, electedState, electedCity, electedCounty) => {
-          this.setState({
-              electedInfo,
-              electedFeds,
-              electedState,
-              electedCity,
-              electedCounty
-          });
-      }
-
-
-
-    //   handleSubmit = async address => {
-    //     const response = await kcdata.get('/search', {
-    //         params: {
-    //             q: term
-    //         }
-    //     });
-    //     this.setState({
-    //         videos:response.data.items,
-    //         selectedVideo: response.data.items[0]
-    //     });
-    //    };
-
-      //  Submits address to APIs
-      handleSubmit = address => {
-        let sentAddress = `https://dev-api.codeforkc.org//address-attributes/V0/${address}?city=Kansas%20City&state=mo`;
-        // Call to City API for KIVA pin
-        axios.get(sentAddress).then((response) => {
-            let myResponse = response.data;
-            let cityID = "https://maps.kcmo.org/kcgis/rest/services/ParcelGeocodes/MapServer/1/" + myResponse.data.city_id + "?f=json&pretty=true";
-
-            // Uses KIVA pinn to get trash day info
-            axios.get(cityID).then((response) => {
-                let mySubResponse = response.data;
-                let trashDay = mySubResponse.feature.attributes.TRASHDAY;
-                let trashProvider =  mySubResponse.feature.attributes.TRASHPROVIDER;
-                let bulkyItems = mySubResponse.feature.attributes.BULKYDAY;
-
-                this.updateInfo(trashDay, trashProvider, bulkyItems);
-            });          
-        })
-		.catch((error) => { // if no address/KIVA is found
-			this.setState({
-				gotData: false
-            });
-            
-			alert("Please make sure the address you are entering is in the Kansas City area and not in a surrounding area like North Kansas City or Liberty.");
-        });
-
-		console.log("Kiva found")
-
-
-        // Building address string for Google Civic info
-        let googleCivicInfoAddress = "https://www.googleapis.com/civicinfo/v2/representatives?address=" + address + "%2C%20Kansas%20City%2C%20MO&key=AIzaSyAfUjwu_XWbdnA-vGUWEb2UImFIJri_7Po"
-
-        let senateCheck = 0; //This is here because there are 2 US senators if the officials array but only one in the offices array
-
-        // Call to Google Civic info API
-        axios.get(googleCivicInfoAddress).then((response) => {
-
-            const myResponse = response.data;
-            const offices = myResponse.offices;
-            const officials = myResponse.officials;
-            let x = 0;
-            const myArray = [];
-
-            while (x < offices.length) {
-                var y = offices[x - senateCheck].name, z = officials[x].name, p = officials[x].photoUrl;
-                if (p === undefined) {
-                    p = "No photo available on google api."
-                }
-                var abc = { "title": y, "name": z, "photoURL": p, "arrayID": x };
-                myArray.push(abc);
-                if (y === "United States Senate") { //Keep an eye on this. Either I was messing up for a while or they changed United States Senator to United State Senate -Js
-                    senateCheck = 1;
-                }
-                x++;
-            }
-
-            
-            let testVar = 0;
-            let fedArray = [], stateArray = [], cityArray = [], countyArray = [];
-
-            while (testVar < myArray.length) {
-                if (myArray[testVar].title === "United States Senate" || myArray[testVar].title === "United States House of Representatives MO-05" || myArray[testVar].title === "United States House of Representatives MO-04" || myArray[testVar].title === "United States House of Representatives MO-06") {
-                    fedArray.push(myArray[testVar]);
-                }
-                if (myArray[testVar].title === "Governor" || myArray[testVar].title === "Lieutenant Governor") {
-                    stateArray.push(myArray[testVar]);
-                }
-                if (myArray[testVar].title.includes("MO State Senate") || myArray[testVar].title.includes("MO State House District") || myArray[testVar].title.includes("State Auditor") || myArray[testVar].title.includes("State Treasurer") || myArray[testVar].title.includes("Attorney General") || myArray[testVar].title.includes("Secretary of State")) {
-                    stateArray.push(myArray[testVar]);
-                }
-                if (myArray[testVar].title.includes("Mayor")) {
-                    cityArray.push(myArray[testVar]);
-                }
-                if (myArray[testVar].title.includes("Council") && myArray[testVar].title.includes("District At-Large")) {
-                    cityArray.push(myArray[testVar]);
-                }
-                if (myArray[testVar].title.includes("Sheriff") || myArray[testVar].title.includes("County Executive") || myArray[testVar].title.includes("Prosecuting Attorney") || myArray[testVar].title.includes("County Legislator") || myArray[testVar].title.includes("Assesor") || myArray[testVar].title.includes("Recorder") || myArray[testVar].title.includes("Collector") || myArray[testVar].title.includes("Circuit Clerk") || myArray[testVar].title.includes("County Clerk") || myArray[testVar].title.includes("Public Administrator") || myArray[testVar].title.includes("County Commissioner Chair")) {
-                    countyArray.push(myArray[testVar]);
-                    //PLEASE NOTE THAT IF THERE IS A COUNTY AUDITOR AS IN CLAY COUNTY IT IS NOT PICKED UP HERE
-                }
-                testVar++;
-            }
-           // testVar++;
-        // }
-            const electedInfo = myArray;
-            this.updateElectedO(electedInfo, fedArray, stateArray, cityArray, countyArray);
-
-        });
-        //***************END OF AXIOS CALL***************
     }
+
+    // Submit Address to KC Data API
+    kcDataSubmit = async address => {
+        const response = await axios.get(`https://dev-api.codeforkc.org//address-attributes/V0/${address}?city=Kansas%20City&state=mo`)
+        .then( async response => {
+            let myResponse = await response.data;
+            let kivaSTRING = await "https://maps.kcmo.org/kcgis/rest/services/ParcelGeocodes/MapServer/1/" + myResponse.data.city_id + "?f=json&pretty=true";
+            const returnValue = await this.kcMapsSubmit(kivaSTRING);
+            return returnValue
+        })
+        .catch( error => {
+            console.log(error);
+        });
+    };
+
+    // Submit to KCMO Maps
+    kcMapsSubmit = async kivaJSON => {
+        axios.get(kivaJSON).then((response) => {
+            let mySubResponse = response.data;
+            let trashDay = mySubResponse.feature.attributes.TRASHDAY;
+            let trashProvider =  mySubResponse.feature.attributes.TRASHPROVIDER;
+            let bulkyItems = mySubResponse.feature.attributes.BULKYDAY;
+            this.updateInfo(trashDay, trashProvider, bulkyItems);
+        })
+        .catch((error) => { // if no address/KIVA is found
+            this.setState({ gotData: false });
+            console.log(error);
+            alert("Please make sure the address you are entering is in the Kansas City area and not in a surrounding area like North Kansas City or Liberty.");
+        });
+    }
+
+
+    // Google Civic Info API
+    googleCivicSubmit = address => {
+        let buildString = "https://www.googleapis.com/civicinfo/v2/representatives?address=" + address + "%2C%20Kansas%20City%2C%20MO&key=AIzaSyAfUjwu_XWbdnA-vGUWEb2UImFIJri_7Po";
+        axios.get(buildString).then((response) => {
+            const { offices, officials } = response.data;
+            offices.splice(3,0,{name: 'United States Sentate'});
+            this.setState({ 
+                offices,
+                officials
+            });
+        })
+        .catch((error) => { 
+            console.log(error);
+        });
+    }
+
+
+    //  Submits address to APIs
+    handleSubmit =  async address => {
+        let sentAddress =  await `${address}?city=Kansas%20City&state=mo`;
+        let kivaJSON = await this.kcDataSubmit(sentAddress);
+        let googleCivic = await this.googleCivicSubmit(sentAddress);
+    }
+
 
     render() {
         return (
             <div className="container">
-                <img src={logo} alt="ResideKC Logo" className='logo' />
+                <img src={logo} alt="ResideKC" className='logo' />
 
-                { this.state.gotData ? <RenderInfo trashInfo={this.state.trashInfo} displayInfo={this.displayInfo} setAddress={this.setAddress} address={this.state.address} electedState={this.state.electedState}  electedFeds={this.state.electedFeds} /> :  <RenderSearch handleSubmit={this.handleSubmit} setAddress={this.setAddress}/> }
+                { this.state.gotData ? <RenderInfo trashInfo={this.state.trashInfo} displayInfo={this.displayInfo} setAddress={this.setAddress} address={this.state.address} electedState={this.state.electedState}  electedFeds={this.state.electedFeds} offices={this.state.offices} officials={this.state.officials} /> :  <RenderSearch handleSubmit={this.handleSubmit} setAddress={this.setAddress}/> }
 
             </div>
         ) 

@@ -4,6 +4,7 @@ import { Button, ButtonGroup } from 'reactstrap';
 import Trashday from './TrashDay';
 import StateGovernmentInfo from './StateGovernmentInfo';
 import FederalOfficialsInfo from './FederalOfficialsInfo';
+import Officials from './Officials'
 
 class RenderInfo extends React.Component {
     state = {
@@ -28,7 +29,9 @@ class RenderInfo extends React.Component {
 
                 {this.state.displayInfo === "trash" && <Trashday bulkyItems={this.props.trashInfo.bulkyItems} trashProvider={this.props.trashInfo.trashProvider} trashDay={this.props.trashInfo.trashDay} />}
 
-                {this.state.displayInfo === "State Government" && <StateGovernmentInfo electedState={this.props.electedState} />}
+                {/* {this.state.displayInfo === "State Government" && <StateGovernmentInfo electedState={this.props.electedState} />} */}
+
+                {this.state.displayInfo === "State Government" && <Officials offices={this.props.offices} officials={this.props.officials}/>}
 
                 {this.state.displayInfo === "electedOfficials" && < FederalOfficialsInfo electedFeds={this.props.electedFeds} />}
             </div>
