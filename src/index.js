@@ -5,9 +5,7 @@ import axios from 'axios';
 import registerServiceWorker from './registerServiceWorker';
 import RenderInfo from './components/RenderInfo';
 import RenderSearch from './components/RenderSearch';
-import SearchBox from './components/SearchBox';
 import logo from './assets/residekc_logo.svg'
-import kcdata from './apis/kcdata';
 
 class App extends React.Component {
     state = {
@@ -61,7 +59,7 @@ class App extends React.Component {
 
     // Submit Address to KC Data API
     kcDataSubmit = async address => {
-        const response = await axios.get(`https://dev-api.codeforkc.org//address-attributes/V0/${address}?city=Kansas%20City&state=mo`)
+        await axios.get(`https://dev-api.codeforkc.org//address-attributes/V0/${address}?city=Kansas%20City&state=mo`)
         .then( async response => {
             let myResponse = await response.data;
             let kivaSTRING = await "https://maps.kcmo.org/kcgis/rest/services/ParcelGeocodes/MapServer/1/" + myResponse.data.city_id + "?f=json&pretty=true";
@@ -112,8 +110,8 @@ class App extends React.Component {
     //  Submits address to APIs
     handleSubmit =  async address => {
         let sentAddress =  await `${address}?city=Kansas%20City&state=mo`;
-        let kivaJSON = await this.kcDataSubmit(sentAddress);
-        let googleCivic = await this.googleCivicSubmit(sentAddress);
+        await this.kcDataSubmit(sentAddress);
+        await this.googleCivicSubmit(sentAddress);
     }
 
 

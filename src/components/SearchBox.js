@@ -27,28 +27,6 @@ class SearchBar extends React.Component {
   }
 
   render() {
-    const renderSuggestion = ({ suggestion }) => (
-      <div>{suggestion}</div>
-    );
-    
-    const shouldFetchSuggestions = ({ value }) => value.length > 2;
-    
-    // const onError = (status, clearSuggestions) => {
-    //   console.log(
-    //     'Error while fetching suggestions from API',
-    //     status
-    //   )
-    //   clearSuggestions();
-    // }
-
-    const inputProps = {
-      type: 'text',
-      value: this.state.address,
-      onChange: this.handleChange,
-      autoFocus: true,
-      placeholder: 'What is your address?'
-    }
-
     return (
       <div className="searchbox">
         <PlacesAutocomplete

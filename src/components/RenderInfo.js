@@ -2,8 +2,6 @@ import React from 'react';
 import SearchBox from './SearchBox';
 import { Button, ButtonGroup } from 'reactstrap';  
 import Trashday from './TrashDay';
-import StateGovernmentInfo from './StateGovernmentInfo';
-import FederalOfficialsInfo from './FederalOfficialsInfo';
 import Officials from './Officials'
 
 class RenderInfo extends React.Component {
@@ -16,7 +14,6 @@ class RenderInfo extends React.Component {
     }
 
     render() {
-        console.log(this.props.electedState);
         return (
             <div>
                 <SearchBox setAddress={this.props.setAddress} address={this.props.address} />
