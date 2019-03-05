@@ -5,7 +5,7 @@ const RenderSearch = (props) => {
     return (
         <div>
             <form onSubmit={props.handleSubmit}>
-                <label className="mainLabel">Search and click on your address below.</label>    
+                <label>Search and click on your address below.</label>    
                 <SearchBox setAddress={props.setAddress} />
             </form>
         </div>
