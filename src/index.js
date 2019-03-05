@@ -94,8 +94,10 @@ class App extends React.Component {
     googleCivicSubmit = address => {
         let buildString = "https://www.googleapis.com/civicinfo/v2/representatives?address=" + address + "%2C%20Kansas%20City%2C%20MO&key=AIzaSyAfUjwu_XWbdnA-vGUWEb2UImFIJri_7Po";
         axios.get(buildString).then((response) => {
-            const { offices, officials } = response.data;
+            let { offices, officials } = response.data;
             offices.splice(3,0,{name: 'United States Sentate'});
+            offices.splice(0,2);
+            officials.splice(0,2);
             this.setState({ 
                 offices,
                 officials

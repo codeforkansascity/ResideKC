@@ -23,17 +23,15 @@ class RenderInfo extends React.Component {
 
                 <ButtonGroup>
                     <Button onClick={() => {this.handleClick('trash')}} >Trash</Button>
-                    <Button onClick={() => {this.handleClick('State Government')}} >State Officials</Button>
-                    <Button onClick={() => {this.handleClick('electedOfficials')}} >Federal Legislative Officials</Button>
+                    <Button onClick={() => {this.handleClick('stateGovernment')}}>State Officials</Button>
+                    <Button onClick={() => {this.handleClick('federalGovernment')}} >Federal Legislative Officials</Button>
                 </ButtonGroup>
 
-                {this.state.displayInfo === "trash" && <Trashday bulkyItems={this.props.trashInfo.bulkyItems} trashProvider={this.props.trashInfo.trashProvider} trashDay={this.props.trashInfo.trashDay} />}
+                {this.state.displayInfo === "trash" && <Trashday bulkyItems={this.props.trashInfo.bulkyItems} trashProvider={this.props.trashInfo.trashProvider} trashDay={this.props.trashInfo.trashDay} />} 
 
-                {/* {this.state.displayInfo === "State Government" && <StateGovernmentInfo electedState={this.props.electedState} />} */}
+                {this.state.displayInfo === "stateGovernment" && <Officials list="stateList" offices={this.props.offices} officials={this.props.officials}/>}
 
-                {this.state.displayInfo === "State Government" && <Officials offices={this.props.offices} officials={this.props.officials}/>}
-
-                {this.state.displayInfo === "electedOfficials" && < FederalOfficialsInfo electedFeds={this.props.electedFeds} />}
+                {this.state.displayInfo === "federalGovernment" && <Officials list="federalList" offices={this.props.offices} officials={this.props.officials}/>}
             </div>
         )
     }
