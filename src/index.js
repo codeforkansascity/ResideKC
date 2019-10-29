@@ -19,7 +19,9 @@ class App extends React.Component {
             bulkyItems: ''
         },
         offices: [],
-        officials: []       
+        officials: [],
+        latitude: '',
+        longitude: ''       
     }
         
 
@@ -59,9 +61,19 @@ class App extends React.Component {
 
     // Submit Address to KC Data API
     kcDataSubmit = async address => {
-        await axios.get(`https://dev-api.codeforkc.org//address-attributes/V0/${address}?city=Kansas%20City&state=mo`)
+        //Below is the line of code that had been working. It stopped working, so we went to the second grouping of line of code
+        //await axios.get(`https://dev-api.codeforkc.org//address-attributes/V0/${address}?city=Kansas%20City&state=mo`)
+        //Below this line is the testing I am going to see to try and integrate everything
+        let editedAddress = address.replace(/ /g, "%20");
+        await axios.get('http://dev-api.codeforkc.org//address-attributes/V0/' + editedAddress + '?city=Kansas%20City&state=MO')
+        //Below this is the line of code suggest by Paul
+        //await axios.get( 'http://dev-api.codeforkc.org/address-attributes/V0/7401%20MAIN%20ST?city=Kansas%20City&state=MO')
         .then( async response => {
             let myResponse = await response.data;
+            let myLat = myResponse.data.latitude, myLong = myResponse.data.longitude;
+            console.log(myResponse.data);
+            console.log (myLat, myLong);
+            this.setState({latitude: myResponse.data.latitude, longitude: myResponse.data.longitude});
             let kivaSTRING = await "https://maps.kcmo.org/kcgis/rest/services/ParcelGeocodes/MapServer/1/" + myResponse.data.city_id + "?f=json&pretty=true";
             const returnValue = await this.kcMapsSubmit(kivaSTRING);
             return returnValue
@@ -109,7 +121,12 @@ class App extends React.Component {
 
     //  Submits address to APIs
     handleSubmit =  async address => {
-        let sentAddress =  await `${address}?city=Kansas%20City&state=mo`;
+        //This worked for a while but right now testing the old way as the new way isn't working right now
+        //New way
+        //let sentAddress =  await `${address}?city=Kansas%20City&state=mo`;
+        //Old Way
+        let sentAddress = address;
+        //Update: Old way works. leaving new code commented out for posterity
         await this.kcDataSubmit(sentAddress);
         await this.googleCivicSubmit(sentAddress);
     }
@@ -120,7 +137,7 @@ class App extends React.Component {
             <div className="container">
                 <img src={logo} alt="ResideKC" className='logo' />
 
-                { this.state.gotData ? <RenderInfo trashInfo={this.state.trashInfo} displayInfo={this.displayInfo} setAddress={this.setAddress} address={this.state.address} electedState={this.state.electedState}  electedFeds={this.state.electedFeds} offices={this.state.offices} officials={this.state.officials} /> :  <RenderSearch handleSubmit={this.handleSubmit} setAddress={this.setAddress}/> }
+                { this.state.gotData ? <RenderInfo trashInfo={this.state.trashInfo} displayInfo={this.displayInfo} setAddress={this.setAddress} address={this.state.address} electedState={this.state.electedState}  electedFeds={this.state.electedFeds} offices={this.state.offices} officials={this.state.officials} latitude={this.state.latitude} longitude={this.state.longitude}/> :  <RenderSearch handleSubmit={this.handleSubmit} setAddress={this.setAddress}/> }
 
             </div>
         ) 
