@@ -99,10 +99,9 @@ class App extends React.Component {
         });
     }
 
-
     // Google Civic Info API
     googleCivicSubmit = address => {
-        let buildString = "https://www.googleapis.com/civicinfo/v2/representatives?address=" + address + "%2C%20Kansas%20City%2C%20MO&key=AIzaSyAfUjwu_XWbdnA-vGUWEb2UImFIJri_7Po";
+        let buildString = "https://www.googleapis.com/civicinfo/v2/representatives?address=" + address + "%2C%20Kansas%20City%2C%20MO&key=AIzaSyANGMualu3HzRARJIsPuLM0vHbIxAHVQpE";
         axios.get(buildString).then((response) => {
             let { offices, officials } = response.data;
             offices.splice(3,0,{name: 'United States Sentate'});
