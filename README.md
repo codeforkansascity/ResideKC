@@ -63,6 +63,10 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/ad
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
 
+Use this website for information on how to deploy between master and gh-pages: https://create-react-app.dev/docs/deployment/
+You should only have to use 'npm run deploy'
+Use this website for troubleshooting
+
 ### `npm run build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify

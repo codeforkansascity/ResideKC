@@ -2,6 +2,7 @@
   "name": "residekc2",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://codeforkc.org/ResideKC/",
   "dependencies": {
     "axios": "^0.19.0",
     "node-sass": "^4.12.0",
@@ -15,6 +16,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -25,5 +28,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "gh-pages": "^2.2.0"
+  }
 }
