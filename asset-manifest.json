@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/ResideKC/static/css/main.402f9250.chunk.css",
+    "main.js": "/ResideKC/static/js/main.e8f8eb49.chunk.js",
+    "main.js.map": "/ResideKC/static/js/main.e8f8eb49.chunk.js.map",
+    "runtime~main.js": "/ResideKC/static/js/runtime~main.202ee198.js",
+    "runtime~main.js.map": "/ResideKC/static/js/runtime~main.202ee198.js.map",
+    "static/js/2.ca6f6d7d.chunk.js": "/ResideKC/static/js/2.ca6f6d7d.chunk.js",
+    "static/js/2.ca6f6d7d.chunk.js.map": "/ResideKC/static/js/2.ca6f6d7d.chunk.js.map",
+    "index.html": "/ResideKC/index.html",
+    "precache-manifest.527e270794994b1434ba17e852dbf639.js": "/ResideKC/precache-manifest.527e270794994b1434ba17e852dbf639.js",
+    "service-worker.js": "/ResideKC/service-worker.js",
+    "static/css/main.402f9250.chunk.css.map": "/ResideKC/static/css/main.402f9250.chunk.css.map",
+    "static/media/residekc_logo.svg": "/ResideKC/static/media/residekc_logo.9602df15.svg"
+  }
+}
