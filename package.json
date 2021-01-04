@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "https://codeforkc.org/ResideKC/",
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "node-sass": "^4.12.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
